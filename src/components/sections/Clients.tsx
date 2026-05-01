@@ -68,26 +68,22 @@ const Clients = () => {
       className="relative overflow-hidden px-6 py-32"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.07),transparent_35%)]" />
-
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-white/40">
               Clients / Experience
             </p>
-
             <h2 className="mt-6 max-w-3xl text-4xl font-semibold leading-tight tracking-tight md:text-6xl">
               Trusted experience across complex digital products.
             </h2>
           </div>
-
           <p className="max-w-md text-base leading-7 text-white/50">
             From enterprise security platforms to Web3 infrastructure and
             AI-driven products — I build interfaces that are clean, scalable,
             and production-ready.
           </p>
         </div>
-
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {clients.map((client, i) => (
             <div
@@ -97,14 +93,11 @@ const Clients = () => {
               <p className="text-xs uppercase tracking-[0.25em] text-white/30">
                 0{i + 1}
               </p>
-
               <h3 className="mt-10 text-xl font-medium">{client.name}</h3>
-
               <p className="mt-3 text-sm text-white/50">{client.type}</p>
             </div>
           ))}
         </div>
-
         <div className="clients-statement mt-20 rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl md:p-12">
           <p className="max-w-5xl text-3xl font-medium leading-tight tracking-tight text-white/80 md:text-5xl">
             I don’t just build screens. I create reliable digital systems that

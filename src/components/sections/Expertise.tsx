@@ -45,12 +45,10 @@ const Expertise = () => {
           <p className="text-sm uppercase tracking-[0.3em] text-white/40">
             Expertise
           </p>
-
           <h2 className="mt-6 text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
             What I build and optimize
           </h2>
         </div>
-
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {expertise.map((item) => (
             <div
@@ -60,9 +58,7 @@ const Expertise = () => {
               <div className="absolute inset-0 opacity-0 transition group-hover:opacity-100">
                 <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-blue-500/20 blur-3xl" />
               </div>
-
               <h3 className="relative text-lg font-medium">{item.title}</h3>
-
               <p className="relative mt-3 text-sm leading-6 text-white/60">
                 {item.description}
               </p>
