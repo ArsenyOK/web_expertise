@@ -58,7 +58,7 @@ const Projects = () => {
         </div>
 
         <div ref={trackRef} className="flex w-max gap-6 pr-24">
-          {projects.map((project, index) => (
+          {projects.map((project, i) => (
             <article
               key={project.id}
               className="group relative flex h-[520px] w-[82vw] max-w-[760px] shrink-0 flex-col justify-between overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl md:w-[680px]"
@@ -70,7 +70,7 @@ const Projects = () => {
                   {project.type}
                 </span>
 
-                <span className="text-sm text-white/30">0{index + 1}</span>
+                <span className="text-sm text-white/30">0{i + 1}</span>
               </div>
 
               <div className="relative z-10">
