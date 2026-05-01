@@ -1,4 +1,5 @@
 import Header from "./components/layout/Header";
+import Blog from "./components/sections/Blog";
 import Clients from "./components/sections/Clients";
 import Expertise from "./components/sections/Expertise";
 import Hero from "./components/sections/Hero";
@@ -14,6 +15,7 @@ const App = () => {
       <Projects />
       <Clients />
       <Process />
+      <Blog />
     </main>
   );
 };

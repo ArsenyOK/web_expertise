@@ -1,5 +1,3 @@
-import React from "react";
-
 const Header = () => {
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/30 backdrop-blur-xl">
@@ -7,7 +5,6 @@ const Header = () => {
         <a href="#" className="text-sm font-semibold tracking-wide">
           Arseniy Pilypenko
         </a>
-
         <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
           <a href="#expertise" className="hover:text-white">
             Expertise
@@ -22,7 +19,6 @@ const Header = () => {
             Insights
           </a>
         </nav>
-
         <a
           href="#contact"
           className="rounded-full border border-white/20 px-5 py-2 text-sm hover:bg-white hover:text-black"

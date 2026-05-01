@@ -50,26 +50,21 @@ const Hero = () => {
       className="relative flex min-h-screen items-center overflow-hidden px-6 pt-28"
     >
       <div className="hero-glow absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/20 blur-[120px]" />
-
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_35%)]" />
-
       <div className="relative z-10 mx-auto max-w-7xl">
         <p className="hero-label mb-6 text-sm uppercase tracking-[0.35em] text-white/50">
           Software Engineer / Premium Digital Products
         </p>
-
         <h1 className="hero-title max-w-6xl overflow-hidden text-6xl font-semibold leading-[0.95] tracking-[-0.06em] md:text-8xl lg:text-9xl">
           <span className="block">I build</span>
           <span className="block">web, mobile</span>
           <span className="block">and AI products.</span>
         </h1>
-
         <p className="hero-text mt-8 max-w-2xl text-lg leading-8 text-white/60 md:text-xl">
           I help companies and founders design, build, optimize, and launch
           high-performance SaaS platforms, AI tools, MVPs, and scalable frontend
           systems using React, Angular, and modern engineering practices.
         </p>
-
         <div className="hero-actions mt-10 flex flex-col gap-4 sm:flex-row">
           <a
             href="#contact"
@@ -77,7 +72,6 @@ const Hero = () => {
           >
             Start a project
           </a>
-
           <a
             href="#work"
             className="rounded-full border border-white/20 px-7 py-4 text-sm font-medium text-white transition hover:bg-white/10"
