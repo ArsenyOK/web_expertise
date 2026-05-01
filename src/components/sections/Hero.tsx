@@ -60,7 +60,7 @@ const Hero = () => {
 
         <h1 className="hero-title max-w-6xl overflow-hidden text-6xl font-semibold leading-[0.95] tracking-[-0.06em] md:text-8xl lg:text-9xl">
           <span className="block">I build</span>
-          <span className="block text-white/60">web, mobile</span>
+          <span className="block">web, mobile</span>
           <span className="block">and AI products.</span>
         </h1>
 
