@@ -1,6 +1,7 @@
 import Header from "./components/layout/Header";
 import Expertise from "./components/sections/Expertise";
 import Hero from "./components/sections/Hero";
+import Projects from "./components/sections/Projects";
 
 const App = () => {
   return (
@@ -8,6 +9,7 @@ const App = () => {
       <Header />
       <Hero />
       <Expertise />
+      <Projects />
     </main>
   );
 };
