@@ -2,6 +2,7 @@ import Header from "./components/layout/Header";
 import Clients from "./components/sections/Clients";
 import Expertise from "./components/sections/Expertise";
 import Hero from "./components/sections/Hero";
+import Process from "./components/sections/Process";
 import Projects from "./components/sections/Projects";
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
       <Expertise />
       <Projects />
       <Clients />
+      <Process />
     </main>
   );
 };

@@ -12,9 +12,27 @@ const Clients = () => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.from(".client-card", {
+      const cards = gsap.utils.toArray<HTMLElement>(".client-card");
+
+      const statement = sectionRef.current?.querySelector(
+        ".clients-statement",
+      ) as HTMLElement | null;
+
+      gsap.set(cards, {
         y: 60,
         opacity: 0,
+      });
+
+      if (statement) {
+        gsap.set(statement, {
+          y: 40,
+          opacity: 0,
+        });
+      }
+
+      gsap.to(cards, {
+        y: 0,
+        opacity: 1,
         duration: 0.9,
         stagger: 0.12,
         ease: "power3.out",
@@ -25,19 +43,19 @@ const Clients = () => {
         },
       });
 
-      gsap.from(".clients-statement", {
-        y: 40,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 65%",
-          once: true,
-        },
-      });
-
-      ScrollTrigger.refresh();
+      if (statement) {
+        gsap.to(statement, {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 65%",
+            once: true,
+          },
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -71,13 +89,13 @@ const Clients = () => {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {clients.map((client, index) => (
+          {clients.map((client, i) => (
             <div
               key={client.id}
               className="client-card group rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white/[0.08]"
             >
               <p className="text-xs uppercase tracking-[0.25em] text-white/30">
-                0{index + 1}
+                0{i + 1}
               </p>
 
               <h3 className="mt-10 text-xl font-medium">{client.name}</h3>
