@@ -54,7 +54,7 @@ const Expertise = () => {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {expertise.map((item) => (
             <div
-              key={item.title}
+              key={item.id}
               className="expertise-card group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition hover:bg-white/10"
             >
               <div className="absolute inset-0 opacity-0 transition group-hover:opacity-100">
