@@ -1,7 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Magnetic from "../ui-tools/Magnetic";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,17 +62,14 @@ const Contact = () => {
           and production-ready digital products.
         </p>
 
-        <div className="mt-10 flex flex-col justify-center gap-8 sm:flex-row">
-            <Magnetic>
+        <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
           <a
             href="mailto:arsen.pilipenko2014@gmail.com"
             className="rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition hover:scale-105"
           >
             Start a project
           </a>
-          </Magnetic>
 
-        <Magnetic>
           <a
             href="https://www.linkedin.com/in/arsenii-pylypenko-071094176/"
             target="_blank"
@@ -82,7 +78,6 @@ const Contact = () => {
           >
             Connect on LinkedIn
           </a>
-          </Magnetic>
         </div>
       </div>
     </section>

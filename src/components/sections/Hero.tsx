@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import Magnetic from "../ui-tools/Magnetic";
 
 const Hero = () => {
   const heroRef = useRef<HTMLElement | null>(null);
@@ -67,23 +66,18 @@ const Hero = () => {
           systems using React, Angular, and modern engineering practices.
         </p>
         <div className="hero-actions mt-10 flex flex-col gap-4 sm:flex-row">
-          <Magnetic>
-            <a
-              href="#contact"
-              className="block rounded-full bg-white px-7 py-4 text-sm font-medium text-black transition hover:scale-105"
-            >
-              Start a project
-            </a>
-          </Magnetic>
-
-          <Magnetic strength={0.2}>
-            <a
-              href="#work"
-              className="block rounded-full border border-white/20 px-7 py-4 text-sm font-medium text-white transition hover:bg-white/10"
-            >
-              View selected work
-            </a>
-          </Magnetic>
+          <a
+            href="#contact"
+            className="rounded-full bg-white px-7 py-4 text-sm font-medium text-black transition hover:scale-105"
+          >
+            Start a project
+          </a>
+          <a
+            href="#work"
+            className="rounded-full border border-white/20 px-7 py-4 text-sm font-medium text-white transition hover:bg-white/10"
+          >
+            View selected work
+          </a>
         </div>
       </div>
     </section>
