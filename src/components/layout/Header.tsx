@@ -3,7 +3,7 @@ const Header = () => {
     <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/30 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <a href="#" className="text-sm font-semibold tracking-wide">
-          Arseniy Pilypenko
+          Arsenii Pylypenko
         </a>
         <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
           <a href="#expertise" className="hover:text-white">
