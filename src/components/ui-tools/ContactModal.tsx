@@ -11,8 +11,6 @@ type ContactModalProps = {
 
 type ModalMode = "intro" | "form";
 
-const EMAIL = "arsen.pilipenko2014@gmail.com";
-
 const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
   const isMobile = useMobile();
   const [shouldRender, setShouldRender] = useState(isOpen);
