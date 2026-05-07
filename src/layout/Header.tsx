@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Logo from "../assets/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,7 +56,7 @@ const Header = ({ onContactOpen }: HeaderProps) => {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <a href="#" className="text-sm font-semibold tracking-wide">
-          Arsenii Pylypenko
+          <Logo className="h-15 w-15 text-white" />
         </a>
 
         <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
