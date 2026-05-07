@@ -2,7 +2,11 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Magnetic from "../ui-tools/Magnetic";
 
-const Hero = () => {
+type HeroProps = {
+  onContactOpen: () => void;
+};
+
+const Hero = ({ onContactOpen }: HeroProps) => {
   const heroRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -68,12 +72,13 @@ const Hero = () => {
         </p>
         <div className="hero-actions mt-10 flex flex-col gap-4 sm:flex-row">
           <Magnetic>
-            <a
-              href="#contact"
+            <button
+              type="button"
+              onClick={onContactOpen}
               className="block rounded-full bg-white px-7 py-4 text-sm font-medium text-black transition hover:scale-105"
             >
-              Start a project
-            </a>
+              Start here
+            </button>
           </Magnetic>
 
           <Magnetic strength={0.2}>

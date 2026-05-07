@@ -74,10 +74,11 @@ const Header = ({ onContactOpen }: HeaderProps) => {
         </nav>
 
         <button
+          type="button"
           onClick={onContactOpen}
           className="rounded-full border border-white/20 px-5 py-2 text-sm hover:bg-white hover:text-black"
         >
-          Discuss a project
+          Get in touch
         </button>
       </div>
 
