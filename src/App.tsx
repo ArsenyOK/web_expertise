@@ -10,14 +10,20 @@ import Projects from "./components/sections/Projects";
 import CustomCursor from "./components/ui-tools/CustomCursor";
 import SmoothScroll from "./components/ui-tools/SmoothScroll";
 import ContactModal from "./components/ui-tools/ContactModal";
+import { useMobile } from "./components/hooks/useMobile";
 
 const App = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const isMobile = useMobile();
 
   return (
     <main className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
-      <SmoothScroll />
-      <CustomCursor />
+      {!isMobile && (
+        <>
+          <SmoothScroll />
+          <CustomCursor />
+        </>
+      )}
       <Header onContactOpen={() => setIsContactOpen(true)} />
       <Hero onContactOpen={() => setIsContactOpen(true)} />
       <Expertise />
