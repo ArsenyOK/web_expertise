@@ -225,7 +225,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
           </button>
         </div>
 
-        <div ref={contentRef} className="relative z-10 min-w-0 pt-12 md:pt-14">
+        <div ref={contentRef} className="relative z-10 min-w-0 pt-14">
           {mode === "intro" ? (
             <>
               <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
