@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import gsap from "gsap";
 import Magnetic from "./Magnetic";
 import { ArrowLeft, X } from "lucide-react";
-import { useMobile } from "../hooks/useMobile";
+import { useMobile } from "../../hooks/useMobile";
 
 type ContactModalProps = {
   isOpen: boolean;
@@ -89,32 +89,27 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
     );
   }, [mode, shouldRender]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
 
-    const name = String(formData.get("name") || "");
-    const email = String(formData.get("email") || "");
-    const company = String(formData.get("company") || "");
-    const budget = String(formData.get("budget") || "");
-    const projectType = String(formData.get("projectType") || "");
-    const message = String(formData.get("message") || "");
+    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
 
-    const subject = encodeURIComponent(`Project inquiry from ${name}`);
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    });
 
-    const body = encodeURIComponent(
-      `Name: ${name}
-Email: ${email}
-Company: ${company}
-Project type: ${projectType}
-Budget / timeline: ${budget}
+    const result = await response.json();
 
-Message:
-${message}`,
-    );
-
-    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+    if (result.success) {
+      form.reset();
+      alert("Message sent successfully.");
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   if (!shouldRender) return null;
