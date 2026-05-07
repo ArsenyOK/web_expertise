@@ -1,18 +1,26 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import gsap from "gsap";
 import Magnetic from "./Magnetic";
-import { X } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
+import { useMobile } from "../hooks/useMobile";
 
 type ContactModalProps = {
   isOpen: boolean;
   onClose: () => void;
 };
 
+type ModalMode = "intro" | "form";
+
+const EMAIL = "arsen.pilipenko2014@gmail.com";
+
 const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
+  const isMobile = useMobile();
   const [shouldRender, setShouldRender] = useState(isOpen);
+  const [mode, setMode] = useState<ModalMode>("intro");
 
   const modalRef = useRef<HTMLDivElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   useLayoutEffect(() => {
     if (isOpen) {
@@ -36,14 +44,24 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
 
       gsap.fromTo(
         panel,
-        { y: 60, opacity: 0, scale: 0.96 },
-        { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "power3.out" },
+        {
+          y: isMobile ? 40 : 60,
+          opacity: 0,
+          scale: isMobile ? 1 : 0.96,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.45,
+          ease: "power3.out",
+        },
       );
     } else {
       gsap.to(panel, {
-        y: 40,
+        y: isMobile ? 28 : 40,
         opacity: 0,
-        scale: 0.96,
+        scale: isMobile ? 1 : 0.96,
         duration: 0.3,
         ease: "power3.in",
       });
@@ -54,70 +72,235 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
         ease: "power3.in",
         onComplete: () => {
           setShouldRender(false);
+          setMode("intro");
           document.body.style.overflow = "";
         },
       });
     }
-  }, [isOpen, shouldRender]);
+  }, [isOpen, shouldRender, isMobile]);
+
+  useLayoutEffect(() => {
+    if (!contentRef.current || !shouldRender) return;
+
+    gsap.fromTo(
+      contentRef.current,
+      { y: 18, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" },
+    );
+  }, [mode, shouldRender]);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    const name = String(formData.get("name") || "");
+    const email = String(formData.get("email") || "");
+    const company = String(formData.get("company") || "");
+    const budget = String(formData.get("budget") || "");
+    const projectType = String(formData.get("projectType") || "");
+    const message = String(formData.get("message") || "");
+
+    const subject = encodeURIComponent(`Project inquiry from ${name}`);
+
+    const body = encodeURIComponent(
+      `Name: ${name}
+Email: ${email}
+Company: ${company}
+Project type: ${projectType}
+Budget / timeline: ${budget}
+
+Message:
+${message}`,
+    );
+
+    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+  };
 
   if (!shouldRender) return null;
+
+  const primaryButton = (
+    <button
+      type="button"
+      onClick={() => setMode("form")}
+      className="w-full rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition active:scale-[0.98] md:w-auto md:hover:scale-105"
+    >
+      Email me
+    </button>
+  );
+
+  const linkedInButton = (
+    <a
+      href="https://www.linkedin.com/in/arsenii-pylypenko-071094176/"
+      target="_blank"
+      rel="noreferrer"
+      className="block w-full rounded-full border border-white/20 px-8 py-4 text-center text-sm font-medium text-white transition active:scale-[0.98] md:w-auto md:hover:bg-white/10"
+    >
+      Connect on LinkedIn
+    </a>
+  );
 
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-6 backdrop-blur-xl"
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black/70 px-4 py-4 backdrop-blur-xl md:px-6"
       onClick={onClose}
     >
       <div
         ref={panelRef}
-        className="relative w-full max-w-3xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#080808] p-8 shadow-2xl md:p-12"
+        className="relative max-h-[92svh] w-full max-w-3xl overflow-y-auto overflow-x-hidden rounded-[1.75rem] border border-white/10 bg-[#080808] p-5 shadow-2xl md:rounded-[2rem] md:p-12"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
+        <div className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl md:h-80 md:w-80" />
 
-        <button
-          onClick={onClose}
-          className="absolute right-6 top-6 text-sm text-white/40 transition hover:text-white"
-        >
-          <X size={24} />
-        </button>
+        <div className="absolute left-5 right-5 top-5 z-20 flex items-center justify-between md:left-6 md:right-6 md:top-6">
+          {mode === "form" ? (
+            <button
+              type="button"
+              onClick={() => setMode("intro")}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/45 transition hover:bg-white/[0.07] hover:text-white"
+              aria-label="Back"
+            >
+              <ArrowLeft size={18} />
+            </button>
+          ) : (
+            <div />
+          )}
 
-        <div className="relative z-10">
-          <p className="text-sm uppercase tracking-[0.3em] text-white/40">
-            Project inquiry
-          </p>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/45 transition hover:bg-white/[0.07] hover:text-white"
+            aria-label="Close modal"
+          >
+            <X size={18} />
+          </button>
+        </div>
 
-          <h2 className="mt-6 max-w-2xl text-4xl font-semibold leading-tight tracking-tight md:text-6xl">
-            Let’s discuss what you want to build.
-          </h2>
+        <div ref={contentRef} className="relative z-10 min-w-0 pt-14">
+          {mode === "intro" ? (
+            <>
+              <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
+                Project inquiry
+              </p>
 
-          <p className="mt-6 max-w-xl text-base leading-7 text-white/55">
-            Tell me about your product, idea, or technical challenge. I can help
-            with SaaS apps, AI tools, MVPs, frontend architecture, performance,
-            and production-ready interfaces.
-          </p>
+              <h2 className="mt-5 max-w-2xl text-[2.35rem] font-semibold leading-[1.02] tracking-[-0.04em] md:mt-6 md:text-6xl md:leading-tight md:tracking-tight">
+                Let’s discuss what you want to build.
+              </h2>
 
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <Magnetic>
-              <a
-                href="mailto:arsen.pilipenko2014@gmail.com"
-                className="block rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition hover:scale-105"
-              >
-                Email me
-              </a>
-            </Magnetic>
+              <p className="mt-5 max-w-xl text-base leading-7 text-white/55 md:mt-6">
+                Tell me about your product, idea, or technical challenge. I can
+                help with SaaS apps, AI tools, MVPs, frontend architecture,
+                performance, and production-ready interfaces.
+              </p>
 
-            <Magnetic>
-              <a
-                href="https://www.linkedin.com/in/arsenii-pylypenko-071094176/"
-                target="_blank"
-                rel="noreferrer"
-                className="block rounded-full border border-white/20 px-8 py-4 text-sm font-medium text-white transition hover:bg-white/10"
-              >
-                Connect on LinkedIn
-              </a>
-            </Magnetic>
-          </div>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row md:mt-10 md:gap-4">
+                {isMobile ? (
+                  primaryButton
+                ) : (
+                  <Magnetic>{primaryButton}</Magnetic>
+                )}
+                {isMobile ? (
+                  linkedInButton
+                ) : (
+                  <Magnetic>{linkedInButton}</Magnetic>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
+                Email inquiry
+              </p>
+
+              <h2 className="mt-5 max-w-2xl text-[2.35rem] font-semibold leading-[1.02] tracking-[-0.04em] md:mt-6 md:text-5xl md:leading-tight">
+                Tell me about your project.
+              </h2>
+
+              <form onSubmit={handleSubmit} className="mt-7 space-y-4 md:mt-8">
+                <div className="grid min-w-0 gap-4 md:grid-cols-2">
+                  <input
+                    name="name"
+                    required
+                    placeholder="Your name"
+                    className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25"
+                  />
+
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="Email address"
+                    className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25"
+                  />
+                </div>
+
+                <div className="grid min-w-0 gap-4 md:grid-cols-2">
+                  <input
+                    name="company"
+                    placeholder="Company / product name"
+                    className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25"
+                  />
+
+                  <select
+                    name="projectType"
+                    className="min-w-0 appearance-none rounded-2xl border border-white/10 bg-[#111111] px-5 py-4 text-sm text-white outline-none focus:border-white/25"
+                    defaultValue=""
+                  >
+                    <option
+                      className="bg-[#111111] text-white"
+                      value=""
+                      disabled
+                    >
+                      Project type
+                    </option>
+                    <option
+                      className="bg-[#111111] text-white"
+                      value="SaaS Web App"
+                    >
+                      SaaS Web App
+                    </option>
+                    <option className="bg-[#111111] text-white" value="AI Tool">
+                      AI Tool
+                    </option>
+                    <option
+                      className="bg-[#111111] text-white"
+                      value="MVP Development"
+                    >
+                      MVP Development
+                    </option>
+                    <option
+                      className="bg-[#111111] text-white"
+                      value="Frontend Optimization"
+                    >
+                      Frontend Optimization
+                    </option>
+                    <option
+                      className="bg-[#111111] text-white"
+                      value="Mobile App"
+                    >
+                      Mobile App
+                    </option>
+                  </select>
+                </div>
+
+                <textarea
+                  name="message"
+                  required
+                  rows={5}
+                  placeholder="What do you want to build?"
+                  className="w-full min-w-0 resize-none rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm leading-6 text-white outline-none placeholder:text-white/35 focus:border-white/25"
+                />
+
+                <button
+                  type="submit"
+                  className="w-full rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition active:scale-[0.98] md:hover:scale-[1.02]"
+                >
+                  Send email
+                </button>
+              </form>
+            </>
+          )}
         </div>
       </div>
     </div>
