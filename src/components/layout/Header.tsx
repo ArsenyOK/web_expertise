@@ -4,7 +4,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Header = () => {
+type HeaderProps = {
+  onContactOpen: () => void;
+};
+
+const Header = ({ onContactOpen }: HeaderProps) => {
   const headerRef = useRef<HTMLElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
 
@@ -69,12 +73,12 @@ const Header = () => {
           </a>
         </nav>
 
-        <a
-          href="#contact"
+        <button
+          onClick={onContactOpen}
           className="rounded-full border border-white/20 px-5 py-2 text-sm hover:bg-white hover:text-black"
         >
-          Start a project
-        </a>
+          Discuss a project
+        </button>
       </div>
 
       <div className="absolute bottom-0 left-0 h-[1px] w-full bg-white/10">
