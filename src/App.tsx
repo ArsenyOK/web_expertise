@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Footer from "./components/layout/Footer";
-import Header from "./components/layout/Header";
+import Footer from "./layout/Footer";
+import Header from "./layout/Header";
 import Blog from "./components/sections/Blog";
 import Clients from "./components/sections/Clients";
 import Expertise from "./components/sections/Expertise";
@@ -10,7 +10,7 @@ import Projects from "./components/sections/Projects";
 import CustomCursor from "./components/ui-tools/CustomCursor";
 import SmoothScroll from "./components/ui-tools/SmoothScroll";
 import ContactModal from "./components/ui-tools/ContactModal";
-import { useMobile } from "./components/hooks/useMobile";
+import { useMobile } from "./hooks/useMobile";
 
 const App = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);

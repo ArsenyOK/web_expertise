@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { blogPosts } from "../../data/blog";
-import { useMobile } from "../hooks/useMobile";
+import { useMobile } from "../../hooks/useMobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
