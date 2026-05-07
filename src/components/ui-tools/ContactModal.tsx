@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import gsap from "gsap";
 import Magnetic from "./Magnetic";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, Check, X } from "lucide-react";
 import { useMobile } from "../../hooks/useMobile";
 
 type ContactModalProps = {
@@ -9,11 +9,13 @@ type ContactModalProps = {
   onClose: () => void;
 };
 
-type ModalMode = "intro" | "form";
+type ModalMode = "intro" | "form" | "success";
 
 const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
   const isMobile = useMobile();
   const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [mode, setMode] = useState<ModalMode>("intro");
 
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -90,23 +92,38 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
     const form = event.currentTarget;
     const formData = new FormData(form);
 
     formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
 
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (result.success) {
+      if (!result.success) {
+        throw new Error("Failed to send message.");
+      }
+
       form.reset();
-      alert("Message sent successfully.");
-    } else {
-      alert("Something went wrong. Please try again.");
+      setMode("success");
+
+      window.setTimeout(() => {
+        onClose();
+      }, 1700);
+    } catch {
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -200,7 +217,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                 )}
               </div>
             </>
-          ) : (
+          ) : mode === "form" ? (
             <>
               <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
                 Email inquiry
@@ -285,14 +302,43 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                   className="w-full min-w-0 resize-none rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm leading-6 text-white outline-none placeholder:text-white/35 focus:border-white/25"
                 />
 
+                {submitError && (
+                  <p className="rounded-2xl border border-red-500/20 bg-red-500/10 px-5 py-4 text-sm text-red-200">
+                    {submitError}
+                  </p>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition active:scale-[0.98] md:hover:scale-[1.02]"
+                  disabled={isSubmitting}
+                  className="w-full rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 md:hover:scale-[1.02]"
                 >
-                  Send email
+                  {isSubmitting ? "Sending..." : "Send email"}
                 </button>
               </form>
             </>
+          ) : (
+            <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
+              <div className="relative mb-8 flex h-24 w-24 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]">
+                <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-2xl" />
+                <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white text-black">
+                  <Check size={26} />
+                </div>
+              </div>
+
+              <p className="text-xs uppercase tracking-[0.28em] text-white/40">
+                Message sent
+              </p>
+
+              <h2 className="mt-5 max-w-xl text-[2.35rem] font-semibold leading-[1.02] tracking-[-0.04em] md:text-5xl">
+                Thanks. I’ll get back to you soon.
+              </h2>
+
+              <p className="mt-5 max-w-md text-base leading-7 text-white/55">
+                Your project inquiry has been sent successfully. The window will
+                close automatically.
+              </p>
+            </div>
           )}
         </div>
       </div>
