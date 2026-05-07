@@ -94,24 +94,57 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
 
     if (isSubmitting) return;
 
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+
+    if (!accessKey) {
+      setSubmitError(
+        "Missing Web3Forms access key. Check VITE_WEB3FORMS_ACCESS_KEY in Vercel Environment Variables.",
+      );
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
+    formData.append("access_key", accessKey);
+    formData.append("from_name", "Arseniy Portfolio");
+    formData.append("subject", "New project inquiry from portfolio");
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData,
+        headers: {
+          Accept: "application/json",
+        },
       });
 
-      const result = await response.json();
+      let result: {
+        success?: boolean;
+        message?: string;
+        errors?: unknown[];
+      } | null = null;
 
-      if (!result.success) {
-        throw new Error("Failed to send message.");
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error(
+          `Web3Forms returned a non-JSON response. HTTP status: ${response.status}`,
+        );
+      }
+
+      if (!response.ok || !result?.success) {
+        const apiMessage =
+          result?.message ||
+          (Array.isArray(result?.errors)
+            ? JSON.stringify(result.errors)
+            : null) ||
+          "Unknown Web3Forms error.";
+
+        throw new Error(`HTTP ${response.status}: ${apiMessage}`);
       }
 
       form.reset();
@@ -120,8 +153,13 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
       window.setTimeout(() => {
         onClose();
       }, 1700);
-    } catch {
-      setSubmitError("Something went wrong. Please try again.");
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unknown network error. Please check your internet connection.";
+
+      setSubmitError(message);
     } finally {
       setIsSubmitting(false);
     }
