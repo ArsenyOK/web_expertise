@@ -94,24 +94,57 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
 
     if (isSubmitting) return;
 
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+
+    if (!accessKey) {
+      setSubmitError(
+        "Missing Web3Forms access key. Check VITE_WEB3FORMS_ACCESS_KEY in Vercel Environment Variables.",
+      );
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
+    formData.append("access_key", accessKey);
+    formData.append("from_name", "Arseniy Portfolio");
+    formData.append("subject", "New project inquiry from portfolio");
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData,
+        headers: {
+          Accept: "application/json",
+        },
       });
 
-      const result = await response.json();
+      let result: {
+        success?: boolean;
+        message?: string;
+        errors?: unknown[];
+      } | null = null;
 
-      if (!result.success) {
-        throw new Error("Failed to send message.");
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error(
+          `Web3Forms returned a non-JSON response. HTTP status: ${response.status}`,
+        );
+      }
+
+      if (!response.ok || !result?.success) {
+        const apiMessage =
+          result?.message ||
+          (Array.isArray(result?.errors)
+            ? JSON.stringify(result.errors)
+            : null) ||
+          "Unknown Web3Forms error.";
+
+        throw new Error(`HTTP ${response.status}: ${apiMessage}`);
       }
 
       form.reset();
@@ -120,8 +153,13 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
       window.setTimeout(() => {
         onClose();
       }, 1700);
-    } catch {
-      setSubmitError("Something went wrong. Please try again.");
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unknown network error. Please check your internet connection.";
+
+      setSubmitError(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -158,7 +196,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
     >
       <div
         ref={panelRef}
-        className="relative max-h-[92svh] w-full max-w-3xl overflow-y-auto overflow-x-hidden rounded-[1.75rem] border border-white/10 bg-[#080808] p-5 shadow-2xl md:rounded-[2rem] md:p-12"
+        className="relative max-h-[96svh] w-full max-w-3xl overflow-y-auto overflow-x-hidden rounded-[1.5rem] border border-white/10 bg-[#080808] p-4 shadow-2xl md:max-h-[92svh] md:rounded-[2rem] md:p-12"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl md:h-80 md:w-80" />
@@ -187,7 +225,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
           </button>
         </div>
 
-        <div ref={contentRef} className="relative z-10 min-w-0 pt-14">
+        <div ref={contentRef} className="relative z-10 min-w-0 pt-12 md:pt-14">
           {mode === "intro" ? (
             <>
               <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
@@ -223,17 +261,20 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                 Email inquiry
               </p>
 
-              <h2 className="mt-5 max-w-2xl text-[2.35rem] font-semibold leading-[1.02] tracking-[-0.04em] md:mt-6 md:text-5xl md:leading-tight">
+              <h2 className="mt-4 max-w-2xl text-[1.85rem] font-semibold leading-[1.02] tracking-[-0.04em] md:mt-6 md:text-5xl md:leading-tight">
                 Tell me about your project.
               </h2>
 
-              <form onSubmit={handleSubmit} className="mt-7 space-y-4 md:mt-8">
+              <form
+                onSubmit={handleSubmit}
+                className="mt-4 space-y-3 md:mt-8 md:space-y-4"
+              >
                 <div className="grid min-w-0 gap-4 md:grid-cols-2">
                   <input
                     name="name"
                     required
                     placeholder="Your name"
-                    className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25"
+                    className="h-12 min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25 md:h-auto md:px-5 md:py-4"
                   />
 
                   <input
@@ -241,65 +282,22 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                     type="email"
                     required
                     placeholder="Email address"
-                    className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25"
+                    className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 md:px-5 md:py-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25"
                   />
                 </div>
 
-                <div className="grid min-w-0 gap-4 md:grid-cols-2">
-                  <input
-                    name="company"
-                    placeholder="Company / product name"
-                    className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25"
-                  />
-
-                  <select
-                    name="projectType"
-                    className="min-w-0 appearance-none rounded-2xl border border-white/10 bg-[#111111] px-5 py-4 text-sm text-white outline-none focus:border-white/25"
-                    defaultValue=""
-                  >
-                    <option
-                      className="bg-[#111111] text-white"
-                      value=""
-                      disabled
-                    >
-                      Project type
-                    </option>
-                    <option
-                      className="bg-[#111111] text-white"
-                      value="SaaS Web App"
-                    >
-                      SaaS Web App
-                    </option>
-                    <option className="bg-[#111111] text-white" value="AI Tool">
-                      AI Tool
-                    </option>
-                    <option
-                      className="bg-[#111111] text-white"
-                      value="MVP Development"
-                    >
-                      MVP Development
-                    </option>
-                    <option
-                      className="bg-[#111111] text-white"
-                      value="Frontend Optimization"
-                    >
-                      Frontend Optimization
-                    </option>
-                    <option
-                      className="bg-[#111111] text-white"
-                      value="Mobile App"
-                    >
-                      Mobile App
-                    </option>
-                  </select>
-                </div>
+                <input
+                  name="company"
+                  placeholder="Company / product name"
+                  className="h-12 w-full min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25 md:h-auto md:px-5 md:py-4"
+                />
 
                 <textarea
                   name="message"
                   required
-                  rows={5}
+                  rows={4}
                   placeholder="What do you want to build?"
-                  className="w-full min-w-0 resize-none rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm leading-6 text-white outline-none placeholder:text-white/35 focus:border-white/25"
+                  className="w-full min-w-0 resize-none rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 md:px-5 md:py-4 text-sm leading-6 text-white outline-none placeholder:text-white/35 focus:border-white/25"
                 />
 
                 {submitError && (
@@ -311,7 +309,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 md:hover:scale-[1.02]"
+                  className="w-full rounded-full bg-white px-8 py-3.5 text-sm font-medium text-black transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 md:py-4 md:hover:scale-[1.02]"
                 >
                   {isSubmitting ? "Sending..." : "Send email"}
                 </button>
