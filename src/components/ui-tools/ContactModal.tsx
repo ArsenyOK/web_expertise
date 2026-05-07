@@ -286,54 +286,11 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                   />
                 </div>
 
-                <div className="grid min-w-0 gap-4 md:grid-cols-2">
-                  <input
-                    name="company"
-                    placeholder="Company / product name"
-                    className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 md:px-5 md:py-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25"
-                  />
-
-                  <select
-                    name="projectType"
-                    className="min-w-0 appearance-none rounded-2xl border border-white/10 bg-[#111111] px-4 py-3 md:px-5 md:py-4 text-sm text-white outline-none focus:border-white/25"
-                    defaultValue=""
-                  >
-                    <option
-                      className="bg-[#111111] text-white"
-                      value=""
-                      disabled
-                    >
-                      Project type
-                    </option>
-                    <option
-                      className="bg-[#111111] text-white"
-                      value="SaaS Web App"
-                    >
-                      SaaS Web App
-                    </option>
-                    <option className="bg-[#111111] text-white" value="AI Tool">
-                      AI Tool
-                    </option>
-                    <option
-                      className="bg-[#111111] text-white"
-                      value="MVP Development"
-                    >
-                      MVP Development
-                    </option>
-                    <option
-                      className="bg-[#111111] text-white"
-                      value="Frontend Optimization"
-                    >
-                      Frontend Optimization
-                    </option>
-                    <option
-                      className="bg-[#111111] text-white"
-                      value="Mobile App"
-                    >
-                      Mobile App
-                    </option>
-                  </select>
-                </div>
+                <input
+                  name="company"
+                  placeholder="Company / product name"
+                  className="h-12 w-full min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/25 md:h-auto md:px-5 md:py-4"
+                />
 
                 <textarea
                   name="message"
