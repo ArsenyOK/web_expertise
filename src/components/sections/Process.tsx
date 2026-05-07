@@ -2,10 +2,12 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { processSteps } from "../../data/process";
+import { useMobile } from "../hooks/useMobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Process = () => {
+  const isMobile = useMobile();
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useLayoutEffect(() => {
@@ -15,33 +17,33 @@ const Process = () => {
       const cards = gsap.utils.toArray<HTMLElement>(".process-card");
 
       gsap.set(cards, {
-        y: 80,
+        y: isMobile ? 32 : 80,
         opacity: 0,
-        scale: 0.96,
+        scale: isMobile ? 1 : 0.96,
       });
 
       gsap.to(cards, {
         y: 0,
         opacity: 1,
         scale: 1,
-        duration: 1,
-        stagger: 0.18,
+        duration: isMobile ? 0.6 : 1,
+        stagger: isMobile ? 0.08 : 0.18,
         ease: "power3.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 55%",
+          start: isMobile ? "top 85%" : "top 55%",
           once: true,
         },
       });
 
       gsap.from(".process-heading", {
-        y: 50,
+        y: isMobile ? 28 : 50,
         opacity: 0,
-        duration: 1,
+        duration: isMobile ? 0.65 : 1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 70%",
+          start: isMobile ? "top 85%" : "top 70%",
           once: true,
         },
       });
@@ -52,43 +54,43 @@ const Process = () => {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-[#050505] px-6 py-32"
+      className="relative overflow-hidden bg-[#050505] px-5 py-20 sm:px-6 md:py-32"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.12),transparent_30%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(59,130,246,0.08),transparent_38%)] md:bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.12),transparent_30%)]" />
 
-      <div className="relative z-10 mx-auto grid max-w-7xl gap-16 lg:grid-cols-[1fr_1.1fr]">
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-10 md:gap-16 lg:grid-cols-[1fr_1.1fr]">
         <div className="process-heading relative lg:sticky lg:top-32 lg:h-fit">
-          <div className="pointer-events-none absolute -left-6 top-20 text-[180px] font-semibold leading-none tracking-[-0.08em] text-white/[0.025] md:text-[220px]">
+          <div className="pointer-events-none absolute -left-4 top-14 text-[120px] font-semibold leading-none tracking-[-0.08em] text-white/[0.018] md:-left-6 md:top-20 md:text-[220px] md:text-white/[0.025]">
             05
           </div>
 
-          <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
+          <div className="absolute left-0 top-0 h-56 w-56 rounded-full bg-blue-500/8 blur-3xl md:h-72 md:w-72 md:bg-blue-500/10" />
 
           <div className="relative z-10">
-            <p className="text-sm uppercase tracking-[0.3em] text-white/40">
+            <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
               Process
             </p>
 
-            <h2 className="relative z-10 mt-6 max-w-xl text-5xl font-semibold leading-[1.05] tracking-[-0.05em] md:text-7xl">
+            <h2 className="relative z-10 mt-5 max-w-xl text-[2.55rem] font-semibold leading-[1.02] tracking-[-0.05em] md:mt-6 md:text-7xl md:leading-[1.05]">
               A clear path from idea to launch.
             </h2>
 
-            <p className="mt-8 max-w-md text-base leading-7 text-white/50">
+            <p className="mt-6 max-w-md text-base leading-7 text-white/50 md:mt-8">
               I turn vague ideas into structured, scalable products — with a
               focus on clarity, performance, and business value from day one.
             </p>
 
-            <div className="mt-12 rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
+            <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 backdrop-blur-xl md:mt-12 md:rounded-2xl md:bg-white/[0.03] md:p-6">
               <p className="text-xs uppercase tracking-[0.2em] text-white/35">
                 Approach
               </p>
 
-              <p className="mt-4 text-lg leading-8 text-white/75">
+              <p className="mt-4 text-base leading-7 text-white/70 md:text-lg md:leading-8 md:text-white/75">
                 Product thinking, scalable architecture, premium UX, and fast
                 execution without sacrificing maintainability.
               </p>
@@ -96,33 +98,34 @@ const Process = () => {
           </div>
         </div>
 
-        <div className="space-y-5">
+        <div className="space-y-4 md:space-y-5">
           {processSteps.map((item, index) => (
             <article
               key={item.id}
-              className={`process-card group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white/[0.075] md:p-10 
-                ${index % 2 === 0 ? "md:translate-y-10" : ""}`}
+              className={`process-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:rounded-[2rem] md:bg-white/[0.04] md:p-10 md:hover:-translate-y-1 md:hover:bg-white/[0.075] ${
+                index % 2 === 0 ? "md:translate-y-10" : ""
+              }`}
             >
-              <div className="absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100">
+              <div className="absolute inset-0 hidden opacity-0 transition duration-500 group-hover:opacity-100 md:block">
                 <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-blue-500/15 blur-3xl" />
               </div>
 
-              <div className="relative z-10 flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
+              <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-8">
                 <div>
-                  <span className="rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.2em] text-white/40">
+                  <span className="rounded-full border border-white/10 px-3 py-2 text-[0.65rem] uppercase tracking-[0.18em] text-white/40 md:px-4 md:text-xs md:tracking-[0.2em]">
                     Step {item.step}
                   </span>
 
-                  <h3 className="mt-8 text-3xl font-semibold tracking-tight md:text-4xl">
+                  <h3 className="mt-6 text-2xl font-semibold tracking-[-0.03em] md:mt-8 md:text-4xl md:tracking-tight">
                     {item.title}
                   </h3>
 
-                  <p className="mt-5 max-w-xl text-base leading-7 text-white/55">
+                  <p className="mt-4 max-w-xl text-sm leading-6 text-white/55 md:mt-5 md:text-base md:leading-7">
                     {item.description}
                   </p>
                 </div>
 
-                <span className="text-6xl font-semibold tracking-[-0.08em] text-white/[0.06] md:text-8xl">
+                <span className="absolute right-5 top-5 text-5xl font-semibold tracking-[-0.08em] text-white/[0.045] md:static md:text-8xl md:text-white/[0.06]">
                   {item.step}
                 </span>
               </div>
