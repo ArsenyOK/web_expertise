@@ -73,6 +73,7 @@ const Hero = ({ onContactOpen }: HeroProps) => {
         <div className="hero-actions mt-10 flex flex-col gap-4 sm:flex-row">
           <Magnetic>
             <button
+              type="button"
               onClick={onContactOpen}
               className="block rounded-full bg-white px-7 py-4 text-sm font-medium text-black transition hover:scale-105"
             >
