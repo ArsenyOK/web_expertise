@@ -1,94 +1,126 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import Magnetic from "../ui-tools/Magnetic";
+import { useMobile } from "../hooks/useMobile";
 
 type HeroProps = {
   onContactOpen: () => void;
 };
 
 const Hero = ({ onContactOpen }: HeroProps) => {
+  const isMobile = useMobile();
   const heroRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!heroRef.current) return;
+
     const ctx = gsap.context(() => {
       gsap.from(".hero-label", {
-        y: 24,
+        y: isMobile ? 16 : 24,
         opacity: 0,
-        duration: 0.8,
+        duration: isMobile ? 0.5 : 0.8,
         ease: "power3.out",
       });
 
       gsap.from(".hero-title span", {
-        y: 120,
+        y: isMobile ? 48 : 120,
         opacity: 0,
-        duration: 1,
-        stagger: 0.12,
+        duration: isMobile ? 0.65 : 1,
+        stagger: isMobile ? 0.07 : 0.12,
         ease: "power4.out",
-        delay: 0.2,
+        delay: 0.15,
       });
 
       gsap.from(".hero-text, .hero-actions", {
-        y: 32,
+        y: isMobile ? 20 : 32,
         opacity: 0,
-        duration: 0.9,
-        stagger: 0.15,
+        duration: isMobile ? 0.6 : 0.9,
+        stagger: 0.12,
         ease: "power3.out",
-        delay: 0.8,
+        delay: isMobile ? 0.45 : 0.8,
       });
 
-      gsap.to(".hero-glow", {
-        scale: 1.15,
-        opacity: 0.9,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
+      if (!isMobile) {
+        gsap.to(".hero-glow", {
+          scale: 1.15,
+          opacity: 0.9,
+          duration: 3,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
     }, heroRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
       ref={heroRef}
-      className="relative flex min-h-screen items-center overflow-hidden px-6 pt-28"
+      className="relative flex min-h-[100svh] items-center overflow-hidden px-5 pb-16 pt-28 sm:px-6 md:min-h-screen md:pb-0"
     >
-      <div className="hero-glow absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/20 blur-[120px]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_35%)]" />
-      <div className="relative z-10 mx-auto max-w-7xl">
-        <p className="hero-label mb-6 text-sm uppercase tracking-[0.35em] text-white/50">
+      <div className="hero-glow absolute left-1/2 top-[42%] h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/15 blur-[90px] md:top-1/2 md:h-[520px] md:w-[520px] md:bg-blue-500/20 md:blur-[120px]" />
+
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.07),transparent_40%)] md:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_35%)]" />
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl">
+        <p className="hero-label mb-5 max-w-[280px] text-xs uppercase leading-5 tracking-[0.25em] text-white/50 sm:max-w-none md:mb-6 md:text-sm md:tracking-[0.35em]">
           Software Engineer / Premium Digital Products
         </p>
-        <h1 className="hero-title max-w-6xl overflow-hidden text-6xl font-semibold leading-[0.95] tracking-[-0.06em] md:text-8xl lg:text-9xl">
+
+        <h1 className="hero-title max-w-6xl overflow-hidden text-[clamp(3.25rem,15vw,5.8rem)] font-semibold leading-[0.92] tracking-[-0.065em] md:text-8xl lg:text-9xl">
           <span className="block">I build</span>
           <span className="block">web, mobile</span>
           <span className="block">and AI products.</span>
         </h1>
-        <p className="hero-text mt-8 max-w-2xl text-lg leading-8 text-white/60 md:text-xl">
+
+        <p className="hero-text mt-7 max-w-xl text-base leading-7 text-white/60 md:mt-8 md:max-w-2xl md:text-xl md:leading-8">
           I help companies and founders design, build, optimize, and launch
           high-performance SaaS platforms, AI tools, MVPs, and scalable frontend
           systems using React, Angular, and modern engineering practices.
         </p>
-        <div className="hero-actions mt-10 flex flex-col gap-4 sm:flex-row">
-          <Magnetic>
-            <button
-              type="button"
-              onClick={onContactOpen}
-              className="block rounded-full bg-white px-7 py-4 text-sm font-medium text-black transition hover:scale-105"
-            >
-              Start here
-            </button>
-          </Magnetic>
 
-          <Magnetic strength={0.2}>
-            <a
-              href="#work"
-              className="block rounded-full border border-white/20 px-7 py-4 text-sm font-medium text-white transition hover:bg-white/10"
-            >
-              View selected work
-            </a>
-          </Magnetic>
+        <div className="hero-actions mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row md:mt-10 md:gap-4">
+          {isMobile ? (
+            <>
+              <button
+                type="button"
+                onClick={onContactOpen}
+                className="w-full rounded-full bg-white px-7 py-4 text-sm font-medium text-black active:scale-[0.98]"
+              >
+                Discuss a project
+              </button>
+
+              <a
+                href="#work"
+                className="w-full rounded-full border border-white/20 px-7 py-4 text-center text-sm font-medium text-white active:scale-[0.98]"
+              >
+                View selected work
+              </a>
+            </>
+          ) : (
+            <>
+              <Magnetic>
+                <button
+                  type="button"
+                  onClick={onContactOpen}
+                  className="block rounded-full bg-white px-7 py-4 text-sm font-medium text-black transition hover:scale-105"
+                >
+                  Discuss a project
+                </button>
+              </Magnetic>
+
+              <Magnetic strength={0.2}>
+                <a
+                  href="#work"
+                  className="block rounded-full border border-white/20 px-7 py-4 text-sm font-medium text-white transition hover:bg-white/10"
+                >
+                  View selected work
+                </a>
+              </Magnetic>
+            </>
+          )}
         </div>
       </div>
     </section>
