@@ -19,7 +19,7 @@ const App = () => {
       <SmoothScroll />
       <CustomCursor />
       <Header onContactOpen={() => setIsContactOpen(true)} />
-      <Hero />
+      <Hero onContactOpen={() => setIsContactOpen(true)} />
       <Expertise />
       <Projects />
       <Clients />
