@@ -1,17 +1,29 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, type MouseEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-router-dom";
 import Logo from "../assets/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
 type HeaderProps = {
+  currentPath: string;
   onContactOpen: () => void;
+  onNavigate: (path: string, hash?: string) => void;
 };
 
-const Header = ({ onContactOpen }: HeaderProps) => {
+const Header = ({ currentPath, onContactOpen, onNavigate }: HeaderProps) => {
   const headerRef = useRef<HTMLElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
+
+  const handleRouteClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    path: string,
+    hash?: string,
+  ) => {
+    event.preventDefault();
+    onNavigate(path, hash);
+  };
 
   useLayoutEffect(() => {
     if (!progressRef.current) return;
@@ -55,9 +67,9 @@ const Header = ({ onContactOpen }: HeaderProps) => {
       className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/30 backdrop-blur-xl"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <a href="#" className="text-sm font-semibold tracking-wide">
+        <Link to="/" className="text-sm font-semibold tracking-wide">
           <Logo className="h-15 w-15 text-white" />
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
           <a href="#expertise" className="hover:text-white">
@@ -72,6 +84,15 @@ const Header = ({ onContactOpen }: HeaderProps) => {
           <a href="#blog" className="hover:text-white">
             Insights
           </a>
+          <Link
+            to="/states"
+            onClick={(event) => handleRouteClick(event, "/states")}
+            className={
+              currentPath === "/states" ? "text-white" : "hover:text-white"
+            }
+          >
+            States
+          </Link>
         </nav>
 
         <button

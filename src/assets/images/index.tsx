@@ -1,4 +1,8 @@
-const Logo = ({ className = "h-10 w-10 text-white" }) => {
+import type { SVGProps } from "react";
+
+type LogoProps = SVGProps<SVGSVGElement>;
+
+const Logo = ({ className = "h-10 w-10 text-white", ...props }: LogoProps) => {
   return (
     <svg
       viewBox="260 240 500 460"
@@ -6,6 +10,8 @@ const Logo = ({ className = "h-10 w-10 text-white" }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-hidden="true"
+      focusable="false"
+      {...props}
     >
       <path
         fillRule="evenodd"
