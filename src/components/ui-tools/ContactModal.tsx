@@ -17,6 +17,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [mode, setMode] = useState<ModalMode>("intro");
+  const isRendered = isOpen || shouldRender;
 
   const modalRef = useRef<HTMLDivElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -24,18 +25,23 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
 
   useLayoutEffect(() => {
     if (isOpen) {
-      setShouldRender(true);
       document.body.style.overflow = "hidden";
     }
   }, [isOpen]);
 
   useLayoutEffect(() => {
-    if (!shouldRender || !modalRef.current || !panelRef.current) return;
+    if (!isRendered) return;
+    if (!modalRef.current || !panelRef.current) return;
 
     const modal = modalRef.current;
     const panel = panelRef.current;
+    let renderFrame: number | undefined;
 
     if (isOpen) {
+      renderFrame = window.requestAnimationFrame(() => {
+        setShouldRender(true);
+      });
+
       gsap.fromTo(
         modal,
         { opacity: 0 },
@@ -77,7 +83,13 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
         },
       });
     }
-  }, [isOpen, shouldRender, isMobile]);
+
+    return () => {
+      if (renderFrame) {
+        window.cancelAnimationFrame(renderFrame);
+      }
+    };
+  }, [isOpen, isRendered, isMobile]);
 
   useLayoutEffect(() => {
     if (!contentRef.current || !shouldRender) return;
@@ -165,7 +177,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
     }
   };
 
-  if (!shouldRender) return null;
+  if (!isRendered) return null;
 
   const primaryButton = (
     <button
