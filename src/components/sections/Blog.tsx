@@ -1,14 +1,29 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, type MouseEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { blogPosts } from "../../data/blog";
 import { useMobile } from "../../hooks/useMobile";
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Blog = () => {
+type BlogProps = {
+  onNavigate: (path: string, hash?: string) => void;
+  currentPath: string;
+};
+
+const Blog = ({ onNavigate, currentPath }: BlogProps) => {
   const isMobile = useMobile();
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  const handleRouteClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    path: string,
+    hash?: string,
+  ) => {
+    event.preventDefault();
+    onNavigate(path, hash);
+  };
 
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
@@ -68,45 +83,51 @@ const Blog = () => {
 
         <div className="grid gap-3 md:grid-cols-3 md:gap-6">
           {blogPosts.map((post, index) => (
-            <article
+            <Link
               key={post.id}
-              className="blog-card group relative min-h-[260px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:min-h-[360px] md:rounded-[2rem] md:bg-white/[0.04] md:p-7 md:hover:-translate-y-2 md:hover:bg-white/[0.08]"
+              to="/states"
+              onClick={(event) => handleRouteClick(event, "/states")}
+              className={
+                currentPath === "/states" ? "text-white" : "hover:text-white"
+              }
             >
-              <div className="absolute inset-0 hidden opacity-0 transition duration-500 group-hover:opacity-100 md:block">
-                <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
-              </div>
+              <article className="blog-card group relative min-h-[260px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:min-h-[360px] md:rounded-[2rem] md:bg-white/[0.04] md:p-7 md:hover:-translate-y-2 md:hover:bg-white/[0.08]">
+                <div className="absolute inset-0 hidden opacity-0 transition duration-500 group-hover:opacity-100 md:block">
+                  <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
+                </div>
 
-              <div className="relative z-10 flex h-full flex-col justify-between">
-                <div>
-                  <div className="flex items-start justify-between gap-6">
-                    <p className="text-xs uppercase tracking-[0.22em] text-white/35 md:tracking-[0.25em]">
-                      {post.category}
+                <div className="relative z-10 flex h-full flex-col justify-between">
+                  <div>
+                    <div className="flex items-start justify-between gap-6">
+                      <p className="text-xs uppercase tracking-[0.22em] text-white/35 md:tracking-[0.25em]">
+                        {post.category}
+                      </p>
+
+                      <span className="text-xs text-white/25 md:hidden">
+                        0{index + 1}
+                      </span>
+                    </div>
+
+                    <h3 className="mt-7 text-2xl font-medium leading-tight tracking-[-0.03em] md:mt-8 md:tracking-normal">
+                      {post.title}
+                    </h3>
+                  </div>
+
+                  <div>
+                    <p className="mt-8 text-sm leading-6 text-white/55 md:mt-10">
+                      {post.description}
                     </p>
 
-                    <span className="text-xs text-white/25 md:hidden">
-                      0{index + 1}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-7 text-2xl font-medium leading-tight tracking-[-0.03em] md:mt-8 md:tracking-normal">
-                    {post.title}
-                  </h3>
-                </div>
-
-                <div>
-                  <p className="mt-8 text-sm leading-6 text-white/55 md:mt-10">
-                    {post.description}
-                  </p>
-
-                  <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-5 md:hidden">
-                    <span className="text-xs text-white/35">
-                      Insight placeholder
-                    </span>
-                    <span className="text-xs text-white">Read →</span>
+                    <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-5 md:hidden">
+                      <span className="text-xs text-white/35">
+                        Insight placeholder
+                      </span>
+                      <span className="text-xs text-white">Read →</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </Link>
           ))}
         </div>
       </div>
