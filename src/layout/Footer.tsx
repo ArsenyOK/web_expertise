@@ -21,12 +21,6 @@ const Footer = () => {
           >
             LinkedIn
           </a>
-          <a
-            href="mailto:arsen.pilipenko2014@gmail.com"
-            className="hover:text-white"
-          >
-            Email
-          </a>
         </div>
       </div>
     </footer>

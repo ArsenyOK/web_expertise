@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, type MouseEvent } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
@@ -9,21 +9,11 @@ gsap.registerPlugin(ScrollTrigger);
 type HeaderProps = {
   currentPath: string;
   onContactOpen: () => void;
-  onNavigate: (path: string, hash?: string) => void;
 };
 
-const Header = ({ currentPath, onContactOpen, onNavigate }: HeaderProps) => {
+const Header = ({ currentPath, onContactOpen }: HeaderProps) => {
   const headerRef = useRef<HTMLElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
-
-  const handleRouteClick = (
-    event: MouseEvent<HTMLAnchorElement>,
-    path: string,
-    hash?: string,
-  ) => {
-    event.preventDefault();
-    onNavigate(path, hash);
-  };
 
   useLayoutEffect(() => {
     if (!progressRef.current) return;
@@ -71,29 +61,22 @@ const Header = ({ currentPath, onContactOpen, onNavigate }: HeaderProps) => {
           <Logo className="h-15 w-15 text-white" />
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
-          <a href="#expertise" className="hover:text-white">
-            Expertise
-          </a>
-          <a href="#work" className="hover:text-white">
-            Work
-          </a>
-          <a href="#clients" className="hover:text-white">
-            Clients
-          </a>
-          <a href="#blog" className="hover:text-white">
-            Insights
-          </a>
-          <Link
-            to="/states"
-            onClick={(event) => handleRouteClick(event, "/states")}
-            className={
-              currentPath === "/states" ? "text-white" : "hover:text-white"
-            }
-          >
-            States
-          </Link>
-        </nav>
+        {currentPath === "/" && (
+          <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
+            <a href="#expertise" className="hover:text-white">
+              Expertise
+            </a>
+            <a href="#work" className="hover:text-white">
+              Work
+            </a>
+            <a href="#clients" className="hover:text-white">
+              Clients
+            </a>
+            <a href="#blog" className="hover:text-white">
+              Insights
+            </a>
+          </nav>
+        )}
 
         <button
           type="button"
@@ -104,12 +87,14 @@ const Header = ({ currentPath, onContactOpen, onNavigate }: HeaderProps) => {
         </button>
       </div>
 
-      <div className="absolute bottom-0 left-0 h-[1px] w-full bg-white/10">
-        <div
-          ref={progressRef}
-          className="h-full w-full origin-left scale-x-0 bg-white"
-        />
-      </div>
+      {currentPath === "/" && (
+        <div className="absolute bottom-0 left-0 h-[1px] w-full bg-white/10">
+          <div
+            ref={progressRef}
+            className="h-full w-full origin-left scale-x-0 bg-white"
+          />
+        </div>
+      )}
     </header>
   );
 };
