@@ -128,7 +128,7 @@ const App = () => {
           }
         />
         <Route
-          path="/state"
+          path="/states"
           element={
             <Suspense fallback={<PageLoader isVisible />}>
               <States />
