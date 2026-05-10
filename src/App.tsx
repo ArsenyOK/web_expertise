@@ -25,8 +25,8 @@ const App = () => {
       <ScrollToTop />
       {!isMobile && (
         <>
-          <SmoothScroll />
-          <CustomCursor />
+          {/* <SmoothScroll /> */}
+          {/* <CustomCursor /> */}
         </>
       )}
       <Header
