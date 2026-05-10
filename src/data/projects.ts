@@ -1,6 +1,6 @@
 export const projects = [
   {
-    id: 1,
+    id: "ai-pr-review-assistant",
     title: "AI PR Review Assistant",
     type: "SaaS / AI Tool",
     description:
@@ -8,7 +8,7 @@ export const projects = [
     status: "Template Project",
   },
   {
-    id: 2,
+    id: "focus-ai",
     title: "Focus AI",
     type: "AI Productivity App",
     description:
@@ -16,7 +16,7 @@ export const projects = [
     status: "Template Project",
   },
   {
-    id: 3,
+    id: "enterprise-security-dashboard",
     title: "Enterprise Security Dashboard",
     type: "Frontend Engineering",
     description:
@@ -24,7 +24,7 @@ export const projects = [
     status: "Template Project",
   },
   {
-    id: 4,
+    id: "mobile-product-mvp",
     title: "Mobile Product MVP",
     type: "Mobile Application",
     description:
