@@ -1,5 +1,5 @@
-import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
+import { /*useLayoutEffect,*/ useRef } from "react";
+// import gsap from "gsap";
 import Magnetic from "../ui-tools/Magnetic";
 import { useMobile } from "../../hooks/useMobile";
 
