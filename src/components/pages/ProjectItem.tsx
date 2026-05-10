@@ -1,11 +1,8 @@
 import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { projectDetails } from "../../data/projectDetails";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const ProjectDetailPage = () => {
   const pageRef = useRef<HTMLElement | null>(null);
@@ -67,9 +64,7 @@ const ProjectDetailPage = () => {
         });
       });
 
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-      });
+      scheduleScrollTriggerRefresh();
     }, pageRef);
 
     return () => ctx.revert();

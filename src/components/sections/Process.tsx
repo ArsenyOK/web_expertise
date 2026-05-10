@@ -1,10 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
 import { processSteps } from "../../data/process";
 import { useMobile } from "../../hooks/useMobile";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Process = () => {
   const isMobile = useMobile();
@@ -48,9 +45,7 @@ const Process = () => {
         },
       });
 
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-      });
+      scheduleScrollTriggerRefresh();
     }, sectionRef);
 
     return () => ctx.revert();

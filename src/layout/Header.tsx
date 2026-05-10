@@ -1,10 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger, scheduleScrollTriggerRefresh } from "../lib/gsap";
 import { Link } from "react-router-dom";
 import Logo from "../assets/images";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type HeaderProps = {
   currentPath: string;
@@ -39,9 +36,7 @@ const Header = ({ currentPath, onContactOpen }: HeaderProps) => {
         },
       });
 
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-      });
+      scheduleScrollTriggerRefresh();
 
       return () => {
         trigger.kill();

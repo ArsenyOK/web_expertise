@@ -1,11 +1,8 @@
 import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
 import { useMobile } from "../../hooks/useMobile";
 import { projects } from "../../data/projects";
 import { Link } from "react-router-dom";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type ProjectsProps = {
   onNavigate: (path: string, hash?: string) => void;
@@ -41,9 +38,7 @@ const Projects = ({ onNavigate }: ProjectsProps) => {
         },
       });
 
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-      });
+      scheduleScrollTriggerRefresh();
     }, sectionRef);
 
     return () => ctx.revert();

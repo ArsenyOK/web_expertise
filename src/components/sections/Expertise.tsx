@@ -1,10 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
 import { expertise } from "../../data/expertise";
 import { useMobile } from "../../hooks/useMobile";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Expertise = () => {
   const isMobile = useMobile();
@@ -34,9 +31,7 @@ const Expertise = () => {
         },
       });
 
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-      });
+      scheduleScrollTriggerRefresh();
     }, sectionRef);
 
     return () => ctx.revert();
