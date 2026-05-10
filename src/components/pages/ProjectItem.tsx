@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { projectDetails } from "../../data/projectDetails";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -76,8 +76,12 @@ const ProjectDetailPage = () => {
   }, [projectId]);
 
   useLayoutEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [projectId]);
+
+  if (!projectData) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <section
