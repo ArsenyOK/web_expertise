@@ -3,6 +3,7 @@ import {
   Suspense,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -22,6 +23,7 @@ import PageLoader from "./components/ui-tools/PageLoader";
 import { useMobile } from "./hooks/useMobile";
 
 const States = lazy(() => import("./components/pages/States"));
+const statePaths = new Set(["/state", "/states"]);
 
 const Home = ({
   onContactOpen,
@@ -53,6 +55,12 @@ const App = () => {
   const routeTimerRef = useRef<number | undefined>(undefined);
   const loaderTimerRef = useRef<number | undefined>(undefined);
 
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
   const scrollToHash = useCallback((hash?: string) => {
     if (!hash) {
       window.scrollTo({ top: 0, behavior: "auto" });
@@ -66,7 +74,7 @@ const App = () => {
 
   const navigateTo = useCallback(
     (path: string, hash?: string) => {
-      const nextPath = path === "/states" ? "/states" : "/";
+      const nextPath = statePaths.has(path) ? path : "/";
       const nextUrl = `${nextPath}${hash ? `#${hash}` : ""}`;
       const currentUrl = `${location.pathname}${location.hash}`;
 
@@ -91,6 +99,18 @@ const App = () => {
     },
     [location.hash, location.pathname, navigate, scrollToHash],
   );
+
+  useLayoutEffect(() => {
+    if (statePaths.has(location.pathname) && !location.hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+      window.requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      });
+    }
+  }, [location.hash, location.pathname]);
 
   useEffect(() => {
     scrollToHash(location.hash.replace("#", ""));
@@ -125,6 +145,14 @@ const App = () => {
               navigateTo={navigateTo}
               onContactOpen={() => setIsContactOpen(true)}
             />
+          }
+        />
+        <Route
+          path="/state"
+          element={
+            <Suspense fallback={<PageLoader isVisible />}>
+              <States />
+            </Suspense>
           }
         />
         <Route
