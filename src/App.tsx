@@ -114,7 +114,6 @@ const App = () => {
       <Header
         currentPath={location.pathname}
         onContactOpen={() => setIsContactOpen(true)}
-        onNavigate={navigateTo}
       />
       <Routes>
         <Route

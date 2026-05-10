@@ -9,21 +9,11 @@ gsap.registerPlugin(ScrollTrigger);
 type HeaderProps = {
   currentPath: string;
   onContactOpen: () => void;
-  onNavigate: (path: string, hash?: string) => void;
 };
 
-const Header = ({ currentPath, onContactOpen, onNavigate }: HeaderProps) => {
+const Header = ({ currentPath, onContactOpen }: HeaderProps) => {
   const headerRef = useRef<HTMLElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
-
-  const handleRouteClick = (
-    event: MouseEvent<HTMLAnchorElement>,
-    path: string,
-    hash?: string,
-  ) => {
-    event.preventDefault();
-    onNavigate(path, hash);
-  };
 
   useLayoutEffect(() => {
     if (!progressRef.current) return;
@@ -84,15 +74,6 @@ const Header = ({ currentPath, onContactOpen, onNavigate }: HeaderProps) => {
           <a href="#blog" className="hover:text-white">
             Insights
           </a>
-          <Link
-            to="/states"
-            onClick={(event) => handleRouteClick(event, "/states")}
-            className={
-              currentPath === "/states" ? "text-white" : "hover:text-white"
-            }
-          >
-            States
-          </Link>
         </nav>
 
         <button
