@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMobile } from "../../hooks/useMobile";
 import { projects } from "../../data/projects";
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -77,10 +78,14 @@ const Projects = ({ onNavigate }: ProjectsProps) => {
 
         <div className="grid gap-4 md:grid-cols-2 md:gap-6">
           {projects.map((project, index) => (
-            <article
-              onClick={() => onNavigate(`/project/${project.id}`)}
+            <Link
               key={project.id}
-              className="project-card group relative min-h-[340px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:min-h-[440px] md:rounded-[2rem] md:bg-white/[0.04] md:p-8 md:hover:-translate-y-2 md:hover:bg-white/[0.075]"
+              to={`/project/${project.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate(`/project/${project.id}`);
+              }}
+              className="project-card group relative min-h-[440px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:bg-white/[0.075]"
             >
               <div className="absolute inset-0 opacity-70 transition duration-500 md:group-hover:opacity-100">
                 <div className="absolute -right-28 -top-28 h-64 w-64 rounded-full bg-blue-500/15 blur-3xl md:-right-24 md:-top-24 md:h-72 md:w-72 md:bg-blue-500/20" />
@@ -122,7 +127,7 @@ const Projects = ({ onNavigate }: ProjectsProps) => {
                   </span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </div>
