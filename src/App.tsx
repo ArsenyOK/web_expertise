@@ -9,9 +9,10 @@ import PageLoader from "./components/ui-tools/PageLoader";
 import { useMobile } from "./hooks/useMobile";
 import Home from "./layout/Home";
 import { useNavigateTo } from "./hooks/useNavigateTo";
+import ScrollToTop from "./components/ui-tools/ScrollToTop";
 
 const States = lazy(() => import("./components/pages/States"));
-const PrjoectPage = lazy(() => import("./components/pages/ProjectItem"));
+const ProjectPage = lazy(() => import("./components/pages/ProjectItem"));
 
 const App = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -20,7 +21,8 @@ const App = () => {
   const { pageLoading, navigateTo } = useNavigateTo();
 
   return (
-    <main className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
+    <main className="min-h-screen overflow-x-hidden bg-[#050505] text-white">
+      <ScrollToTop />
       {!isMobile && (
         <>
           <SmoothScroll />
@@ -51,10 +53,10 @@ const App = () => {
           }
         />
         <Route
-          path="/project"
+          path="/project/:projectId"
           element={
             <Suspense fallback={<PageLoader isVisible />}>
-              <PrjoectPage />
+              <ProjectPage />
             </Suspense>
           }
         />

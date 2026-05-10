@@ -6,7 +6,11 @@ import { projects } from "../../data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Projects = () => {
+type ProjectsProps = {
+  onNavigate: (path: string, hash?: string) => void;
+};
+
+const Projects = ({ onNavigate }: ProjectsProps) => {
   const isMobile = useMobile();
   const sectionRef = useRef<HTMLElement | null>(null);
 
@@ -74,6 +78,7 @@ const Projects = () => {
         <div className="grid gap-4 md:grid-cols-2 md:gap-6">
           {projects.map((project, index) => (
             <article
+              onClick={() => onNavigate(`/project/${project.id}`)}
               key={project.id}
               className="project-card group relative min-h-[340px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:min-h-[440px] md:rounded-[2rem] md:bg-white/[0.04] md:p-8 md:hover:-translate-y-2 md:hover:bg-white/[0.075]"
             >

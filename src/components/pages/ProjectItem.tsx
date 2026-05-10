@@ -1,17 +1,9 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  ArrowLeft,
-  ArrowUpRight,
-  Bolt,
-  Code2,
-  Database,
-  Code,
-  Shield,
-  Users,
-} from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { projectDetail } from "../../data/projectDetails";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -76,31 +68,30 @@ const ProjectDetailPage = () => {
   }, []);
 
   return (
-    <main
+    <section
       ref={pageRef}
-      className="min-h-screen overflow-hidden bg-[#050505] px-5 py-28 text-white sm:px-6"
+      className="min-h-screen overflow-hidden bg-[#050505] px-5 py-35 text-white sm:px-6"
     >
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_35%)]" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <button className="project-reveal mb-16 flex items-center gap-2 text-sm text-white/50 transition hover:text-white">
           <ArrowLeft size={16} />
-          Back to projects
+          {projectDetail.backLabel}
         </button>
 
         <section className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div className="project-reveal">
             <span className="rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.22em] text-white/50">
-              SaaS / AI Tool
+              {projectDetail.hero.type}
             </span>
 
             <h1 className="mt-8 max-w-2xl text-[3.5rem] font-semibold leading-[0.95] tracking-[-0.06em] md:text-7xl">
-              AI PR Review Assistant
+              {projectDetail.hero.title}
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-7 text-white/60 md:text-lg md:leading-8">
-              An AI-powered GitHub App that reviews pull requests, analyzes code
-              changes, and helps teams improve code quality.
+              {projectDetail.hero.description}
             </p>
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -108,14 +99,15 @@ const ProjectDetailPage = () => {
                 href="#"
                 className="rounded-full bg-white px-7 py-4 text-center text-sm font-medium text-black transition hover:scale-105"
               >
-                Live Demo
+                {projectDetail.hero.primaryAction}
               </a>
 
               <a
                 href="#"
                 className="flex items-center justify-center gap-2 rounded-full border border-white/20 px-7 py-4 text-sm font-medium text-white transition hover:bg-white/10"
               >
-                View on GitHub <ArrowUpRight size={16} />
+                {projectDetail.hero.secondaryAction}
+                <ArrowUpRight size={16} />
               </a>
             </div>
           </div>
@@ -125,51 +117,52 @@ const ProjectDetailPage = () => {
 
             <div className="relative grid gap-4 md:grid-cols-[1fr_0.85fr]">
               <div className="rounded-2xl border border-white/10 bg-black/30 p-5">
-                <p className="text-xs text-white/35">Pull Request #142</p>
+                <p className="text-xs text-white/35">
+                  {projectDetail.preview.eyebrow}
+                </p>
 
                 <h3 className="mt-4 text-xl font-medium">
-                  feat: add user analytics tracking
+                  {projectDetail.preview.title}
                 </h3>
 
                 <div className="mt-6 grid grid-cols-4 gap-3">
-                  {[
-                    ["92", "Score"],
-                    ["4", "Issues"],
-                    ["7", "Suggestions"],
-                    ["85%", "Coverage"],
-                  ].map(([value, label]) => (
+                  {projectDetail.preview.stats.map((item) => (
                     <div
-                      key={label}
+                      key={item.label}
                       className="rounded-xl border border-white/10 bg-white/[0.04] p-3"
                     >
-                      <p className="text-lg font-semibold">{value}</p>
+                      <p className="text-lg font-semibold">{item.value}</p>
+
                       <p className="mt-1 text-[0.65rem] text-white/35">
-                        {label}
+                        {item.label}
                       </p>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-6 space-y-3">
-                  <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-sm text-emerald-200">
-                    Good use of TypeScript types
-                  </div>
-
-                  <div className="rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-sm text-yellow-200">
-                    Consider extracting logic into a separate util
-                  </div>
+                  {projectDetail.preview.feedback.map((item) => (
+                    <div
+                      key={item.text}
+                      className={`rounded-xl p-3 text-sm ${
+                        item.type === "success"
+                          ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-200"
+                          : "border border-yellow-500/20 bg-yellow-500/10 text-yellow-200"
+                      }`}
+                    >
+                      {item.text}
+                    </div>
+                  ))}
                 </div>
               </div>
 
               <div className="rounded-2xl border border-white/10 bg-black/40 p-5 font-mono text-xs leading-6 text-white/50">
-                <p className="text-white/30">src/services/analytics.ts</p>
-                <pre className="mt-5 whitespace-pre-wrap">
-                  {`+ trackEvent("signup", {
-+   source: campaign,
-+   userId,
-+ });
+                <p className="text-white/30">
+                  {projectDetail.preview.codeTitle}
+                </p>
 
-- console.log(data);`}
+                <pre className="mt-5 whitespace-pre-wrap">
+                  {projectDetail.preview.code}
                 </pre>
               </div>
             </div>
@@ -178,55 +171,54 @@ const ProjectDetailPage = () => {
 
         <section className="project-section mt-28 grid gap-10 border-t border-white/10 pt-16 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
-            <h2 className="text-2xl font-semibold">Overview</h2>
+            <h2 className="text-2xl font-semibold">
+              {projectDetail.overview.title}
+            </h2>
 
-            <p className="mt-5 max-w-xl text-base leading-7 text-white/55">
-              AI PR Review Assistant is a GitHub App that uses LLM technology to
-              automate pull request reviews. It analyzes code changes, detects
-              potential bugs, highlights security risks, and provides actionable
-              feedback directly inside the pull request.
-            </p>
-
-            <p className="mt-5 max-w-xl text-base leading-7 text-white/55">
-              The goal is to reduce review time, improve code quality, and help
-              engineering teams ship faster with more confidence.
-            </p>
+            {projectDetail.overview.paragraphs.map((paragraph) => (
+              <p
+                key={paragraph}
+                className="mt-5 max-w-xl text-base leading-7 text-white/55"
+              >
+                {paragraph}
+              </p>
+            ))}
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold">Key Results</h2>
+            <h2 className="text-2xl font-semibold">
+              {projectDetail.results.title}
+            </h2>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                ["-40%", "Reduction in review time", Bolt],
-                ["+35%", "Issues caught earlier", Shield],
-                ["+25%", "Developer productivity", Code2],
-                ["10K+", "Pull requests analyzed", Users],
-              ].map(([value, label, Icon]: any) => (
-                <div
-                  key={label as string}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] p-5"
-                >
-                  <Icon className="text-blue-300" size={22} />
-                  <p className="mt-8 text-3xl font-semibold">{value}</p>
-                  <p className="mt-2 text-sm text-white/45">{label}</p>
-                </div>
-              ))}
+              {projectDetail.results.items.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div
+                    key={item.label}
+                    className="rounded-2xl border border-white/10 bg-white/[0.04] p-5"
+                  >
+                    <Icon className="text-blue-300" size={22} />
+
+                    <p className="mt-8 text-3xl font-semibold">{item.value}</p>
+
+                    <p className="mt-2 text-sm text-white/45">{item.label}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
 
         <section className="project-section mt-24 grid gap-8 lg:grid-cols-3">
           <div>
-            <h2 className="text-2xl font-semibold">Key Features</h2>
+            <h2 className="text-2xl font-semibold">
+              {projectDetail.features.title}
+            </h2>
 
             <ul className="mt-6 space-y-4 text-sm leading-6 text-white/55">
-              {[
-                "AI-powered code analysis and suggestions",
-                "Automatic detection of bugs and security risks",
-                "Inline comments with actionable feedback",
-                "GitHub App webhook integration",
-              ].map((feature) => (
+              {projectDetail.features.items.map((feature) => (
                 <li key={feature} className="flex gap-3">
                   <span className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-300" />
                   {feature}
@@ -236,19 +228,12 @@ const ProjectDetailPage = () => {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold">Tech Stack</h2>
+            <h2 className="text-2xl font-semibold">
+              {projectDetail.techStack.title}
+            </h2>
 
             <div className="mt-6 grid grid-cols-2 gap-3">
-              {[
-                "React",
-                "TypeScript",
-                "Node.js",
-                "PostgreSQL",
-                "OpenAI API",
-                "GitHub API",
-                "Prisma",
-                "Vercel",
-              ].map((tech) => (
+              {projectDetail.techStack.items.map((tech) => (
                 <div
                   key={tech}
                   className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/65"
@@ -260,32 +245,35 @@ const ProjectDetailPage = () => {
           </div>
 
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
-            <h2 className="text-2xl font-semibold">Architecture</h2>
+            <h2 className="text-2xl font-semibold">
+              {projectDetail.architecture.title}
+            </h2>
 
             <div className="mt-8 grid gap-3 text-sm text-white/55">
-              {[
-                ["GitHub", Code],
-                ["Webhook Handler", Bolt],
-                ["AI Analysis", Code2],
-                ["Database", Database],
-              ].map(([label, Icon]: any) => (
-                <div
-                  key={label as string}
-                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-black/30 p-4"
-                >
-                  <Icon size={18} className="text-blue-300" />
-                  {label}
-                </div>
-              ))}
+              {projectDetail.architecture.items.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div
+                    key={item.label}
+                    className="flex items-center gap-3 rounded-xl border border-white/10 bg-black/30 p-4"
+                  >
+                    <Icon size={18} className="text-blue-300" />
+                    {item.label}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
 
         <section className="project-section mt-24">
-          <h2 className="text-2xl font-semibold">Screenshots</h2>
+          <h2 className="text-2xl font-semibold">
+            {projectDetail.screenshots.title}
+          </h2>
 
           <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {[1, 2, 3].map((item) => (
+            {projectDetail.screenshots.items.map((item) => (
               <div
                 key={item}
                 className="min-h-[220px] rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.18),transparent_40%),rgba(255,255,255,0.04)] p-5"
@@ -299,22 +287,24 @@ const ProjectDetailPage = () => {
         <section className="project-section mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 md:p-12">
           <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-center">
             <div>
-              <p className="text-sm text-white/40">Next Project</p>
+              <p className="text-sm text-white/40">
+                {projectDetail.nextProject.label}
+              </p>
 
               <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em]">
-                Focus AI
+                {projectDetail.nextProject.title}
               </h2>
 
               <p className="mt-5 max-w-md text-base leading-7 text-white/55">
-                A product that transforms goals and scattered ideas into clear,
-                actionable execution plans.
+                {projectDetail.nextProject.description}
               </p>
 
               <Link
                 to="/"
                 className="mt-8 inline-flex items-center gap-2 text-sm font-medium"
               >
-                View Project <ArrowUpRight size={16} />
+                {projectDetail.nextProject.action}
+                <ArrowUpRight size={16} />
               </Link>
             </div>
 
@@ -322,7 +312,7 @@ const ProjectDetailPage = () => {
           </div>
         </section>
       </div>
-    </main>
+    </section>
   );
 };
 

@@ -16,7 +16,7 @@ const Home = ({ onContactOpen, navigateTo, currentPath }: HomeProps) => {
     <>
       <Hero onContactOpen={onContactOpen} />
       <Expertise />
-      <Projects />
+      <Projects onNavigate={navigateTo} />
       <Clients />
       <Process />
       <Blog onNavigate={navigateTo} currentPath={currentPath} />
