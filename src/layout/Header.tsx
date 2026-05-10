@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, type MouseEvent } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
@@ -61,20 +61,22 @@ const Header = ({ currentPath, onContactOpen }: HeaderProps) => {
           <Logo className="h-15 w-15 text-white" />
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
-          <a href="#expertise" className="hover:text-white">
-            Expertise
-          </a>
-          <a href="#work" className="hover:text-white">
-            Work
-          </a>
-          <a href="#clients" className="hover:text-white">
-            Clients
-          </a>
-          <a href="#blog" className="hover:text-white">
-            Insights
-          </a>
-        </nav>
+        {currentPath === "/" && (
+          <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
+            <a href="#expertise" className="hover:text-white">
+              Expertise
+            </a>
+            <a href="#work" className="hover:text-white">
+              Work
+            </a>
+            <a href="#clients" className="hover:text-white">
+              Clients
+            </a>
+            <a href="#blog" className="hover:text-white">
+              Insights
+            </a>
+          </nav>
+        )}
 
         <button
           type="button"
