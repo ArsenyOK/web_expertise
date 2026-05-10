@@ -1,11 +1,8 @@
 import { useLayoutEffect, useRef, type MouseEvent } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
 import { blogPosts } from "../../data/blog";
 import { useMobile } from "../../hooks/useMobile";
 import { Link } from "react-router-dom";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type BlogProps = {
   onNavigate: (path: string, hash?: string) => void;
@@ -49,9 +46,7 @@ const Blog = ({ onNavigate, currentPath }: BlogProps) => {
         },
       });
 
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-      });
+      scheduleScrollTriggerRefresh();
     }, sectionRef);
 
     return () => ctx.revert();

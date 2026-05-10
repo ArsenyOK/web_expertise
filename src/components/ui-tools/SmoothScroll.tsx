@@ -1,9 +1,6 @@
 import { useLayoutEffect } from "react";
 import Lenis from "lenis";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap, ScrollTrigger, scheduleScrollTriggerRefresh } from "../../lib/gsap";
 
 const SmoothScroll = () => {
   useLayoutEffect(() => {
@@ -22,9 +19,7 @@ const SmoothScroll = () => {
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
 
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
-    });
+    scheduleScrollTriggerRefresh();
 
     return () => {
       gsap.ticker.remove(update);

@@ -1,9 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
 import Magnetic from "../ui-tools/Magnetic";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -33,9 +30,7 @@ const Contact = () => {
         ease: "sine.inOut",
       });
 
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-      });
+      scheduleScrollTriggerRefresh();
     }, sectionRef);
 
     return () => ctx.revert();
