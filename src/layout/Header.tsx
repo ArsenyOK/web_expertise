@@ -104,12 +104,14 @@ const Header = ({ currentPath, onContactOpen, onNavigate }: HeaderProps) => {
         </button>
       </div>
 
-      <div className="absolute bottom-0 left-0 h-[1px] w-full bg-white/10">
-        <div
-          ref={progressRef}
-          className="h-full w-full origin-left scale-x-0 bg-white"
-        />
-      </div>
+      {currentPath === "/" && (
+        <div className="absolute bottom-0 left-0 h-[1px] w-full bg-white/10">
+          <div
+            ref={progressRef}
+            className="h-full w-full origin-left scale-x-0 bg-white"
+          />
+        </div>
+      )}
     </header>
   );
 };
