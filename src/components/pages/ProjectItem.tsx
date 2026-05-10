@@ -2,16 +2,21 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { projectDetails } from "../../data/projectDetails";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ProjectDetailPage = () => {
   const pageRef = useRef<HTMLElement | null>(null);
+  const navigate = useNavigate();
   const { projectId } = useParams();
 
   const projectData = projectDetails.find((el) => el.id === projectId);
+
+  const handleBackToProjects = () => {
+    navigate("/");
+  };
 
   useLayoutEffect(() => {
     if (!pageRef.current) return;
@@ -68,7 +73,11 @@ const ProjectDetailPage = () => {
     }, pageRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [projectId]);
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [projectId]);
 
   return (
     <section
@@ -80,7 +89,10 @@ const ProjectDetailPage = () => {
           {" "}
           <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_35%)]" />
           <div className="relative z-10 mx-auto max-w-7xl">
-            <button className="project-reveal mb-16 flex items-center gap-2 text-sm text-white/50 transition hover:text-white">
+            <button
+              onClick={handleBackToProjects}
+              className="project-reveal mb-16 flex items-center gap-2 text-sm text-white/50 transition hover:text-white"
+            >
               <ArrowLeft size={16} />
               {projectData.backLabel}
             </button>
@@ -276,23 +288,6 @@ const ProjectDetailPage = () => {
               </div>
             </section>
 
-            <section className="project-section mt-24">
-              <h2 className="text-2xl font-semibold">
-                {projectData.screenshots.title}
-              </h2>
-
-              <div className="mt-8 grid gap-5 md:grid-cols-3">
-                {projectData.screenshots.items.map((item) => (
-                  <div
-                    key={item}
-                    className="min-h-[220px] rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.18),transparent_40%),rgba(255,255,255,0.04)] p-5"
-                  >
-                    <div className="h-full rounded-2xl border border-white/10 bg-black/30" />
-                  </div>
-                ))}
-              </div>
-            </section>
-
             <section className="project-section mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 md:p-12">
               <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-center">
                 <div>
@@ -309,7 +304,7 @@ const ProjectDetailPage = () => {
                   </p>
 
                   <Link
-                    to="/"
+                    to={`/project/${projectData.nextProject.nextProjectId}`}
                     className="mt-8 inline-flex items-center gap-2 text-sm font-medium"
                   >
                     {projectData.nextProject.action}

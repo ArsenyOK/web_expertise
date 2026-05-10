@@ -145,13 +145,9 @@ export const projectDetails = [
       ],
     },
 
-    screenshots: {
-      title: "Screenshots",
-      items: [1, 2, 3],
-    },
-
     nextProject: {
       label: "Next Project",
+      nextProjectId: "focus-ai",
       title: "Focus AI",
       description:
         "A product that transforms goals and scattered ideas into clear, actionable execution plans.",
@@ -289,14 +285,10 @@ export const projectDetails = [
       ],
     },
 
-    screenshots: {
-      title: "Screenshots",
-      items: [1, 2, 3],
-    },
-
     nextProject: {
       label: "Next Project",
       title: "Enterprise Security Dashboard",
+      nextProjectId: "enterprise-security-dashboard",
       description:
         "Complex enterprise dashboards optimized for scalability, speed, and operational visibility.",
       action: "View Project",
@@ -431,13 +423,9 @@ reduceBundleSize();`,
       ],
     },
 
-    screenshots: {
-      title: "Screenshots",
-      items: [1, 2, 3],
-    },
-
     nextProject: {
       label: "Next Project",
+      nextProjectId: "mobile-product-mvp",
       title: "Mobile Product MVP",
       description:
         "A polished cross-platform mobile app concept focused on speed and validation.",
@@ -573,13 +561,9 @@ optimizeAnimations();`,
       ],
     },
 
-    screenshots: {
-      title: "Screenshots",
-      items: [1, 2, 3],
-    },
-
     nextProject: {
       label: "Next Project",
+      nextProjectId: "ai-pr-review-assistant",
       title: "AI PR Review Assistant",
       description:
         "An AI-powered GitHub App that reviews pull requests and improves engineering workflows.",
