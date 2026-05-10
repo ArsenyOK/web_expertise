@@ -1,5 +1,5 @@
-import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
+import { /*useLayoutEffect,*/ useRef } from "react";
+// import gsap from "gsap";
 import Magnetic from "../ui-tools/Magnetic";
 import { useMobile } from "../../hooks/useMobile";
 
@@ -11,91 +11,91 @@ const Hero = ({ onContactOpen }: HeroProps) => {
   const isMobile = useMobile();
   const heroRef = useRef<HTMLElement | null>(null);
 
-  useLayoutEffect(() => {
-    if (!heroRef.current) return;
+  // useLayoutEffect(() => {
+  //   if (!heroRef.current) return;
 
-    const isMobileAnimation = window.matchMedia("(max-width: 767px)").matches;
+  //   const isMobileAnimation = window.matchMedia("(max-width: 767px)").matches;
 
-    const ctx = gsap.context(() => {
-      const label = ".hero-label";
-      const titleLines = ".hero-title span";
-      const content = ".hero-text, .hero-actions";
+  //   const ctx = gsap.context(() => {
+  //     const label = ".hero-label";
+  //     const titleLines = ".hero-title span";
+  //     const content = ".hero-text, .hero-actions";
 
-      gsap.set([label, titleLines, content], {
-        autoAlpha: 0,
-        force3D: true,
-        willChange: "transform, opacity",
-      });
+  //     gsap.set([label, titleLines, content], {
+  //       autoAlpha: 0,
+  //       force3D: true,
+  //       willChange: "transform, opacity",
+  //     });
 
-      const tl = gsap.timeline({
-        defaults: {
-          ease: "power3.out",
-        },
-        onComplete: () => {
-          gsap.set([label, titleLines, content], {
-            clearProps: "willChange",
-          });
-        },
-      });
+  //     const tl = gsap.timeline({
+  //       defaults: {
+  //         ease: "power3.out",
+  //       },
+  //       onComplete: () => {
+  //         gsap.set([label, titleLines, content], {
+  //           clearProps: "willChange",
+  //         });
+  //       },
+  //     });
 
-      tl.fromTo(
-        label,
-        {
-          y: isMobileAnimation ? 10 : 24,
-          autoAlpha: 0,
-        },
-        {
-          y: 0,
-          autoAlpha: 1,
-          duration: isMobileAnimation ? 0.45 : 0.8,
-        },
-      );
+  //     tl.fromTo(
+  //       label,
+  //       {
+  //         y: isMobileAnimation ? 10 : 24,
+  //         autoAlpha: 0,
+  //       },
+  //       {
+  //         y: 0,
+  //         autoAlpha: 1,
+  //         duration: isMobileAnimation ? 0.45 : 0.8,
+  //       },
+  //     );
 
-      tl.fromTo(
-        titleLines,
-        {
-          yPercent: isMobileAnimation ? 28 : 100,
-          autoAlpha: 0,
-        },
-        {
-          yPercent: 0,
-          autoAlpha: 1,
-          duration: isMobileAnimation ? 0.65 : 1,
-          stagger: isMobileAnimation ? 0.05 : 0.12,
-          ease: isMobileAnimation ? "power3.out" : "power4.out",
-        },
-        isMobileAnimation ? "-=0.1" : "-=0.3",
-      );
+  //     tl.fromTo(
+  //       titleLines,
+  //       {
+  //         yPercent: isMobileAnimation ? 28 : 100,
+  //         autoAlpha: 0,
+  //       },
+  //       {
+  //         yPercent: 0,
+  //         autoAlpha: 1,
+  //         duration: isMobileAnimation ? 0.65 : 1,
+  //         stagger: isMobileAnimation ? 0.05 : 0.12,
+  //         ease: isMobileAnimation ? "power3.out" : "power4.out",
+  //       },
+  //       isMobileAnimation ? "-=0.1" : "-=0.3",
+  //     );
 
-      tl.fromTo(
-        content,
-        {
-          y: isMobileAnimation ? 12 : 32,
-          autoAlpha: 0,
-        },
-        {
-          y: 0,
-          autoAlpha: 1,
-          duration: isMobileAnimation ? 0.55 : 0.9,
-          stagger: 0.1,
-        },
-        isMobileAnimation ? "-=0.2" : "-=0.3",
-      );
+  //     tl.fromTo(
+  //       content,
+  //       {
+  //         y: isMobileAnimation ? 12 : 32,
+  //         autoAlpha: 0,
+  //       },
+  //       {
+  //         y: 0,
+  //         autoAlpha: 1,
+  //         duration: isMobileAnimation ? 0.55 : 0.9,
+  //         stagger: 0.1,
+  //       },
+  //       isMobileAnimation ? "-=0.2" : "-=0.3",
+  //     );
 
-      if (!isMobileAnimation) {
-        gsap.to(".hero-glow", {
-          scale: 1.15,
-          opacity: 0.9,
-          duration: 3,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-      }
-    }, heroRef);
+  //     if (!isMobileAnimation) {
+  //       gsap.to(".hero-glow", {
+  //         scale: 1.15,
+  //         opacity: 0.9,
+  //         duration: 3,
+  //         repeat: -1,
+  //         yoyo: true,
+  //         ease: "sine.inOut",
+  //       });
+  //     }
+  //   }, heroRef);
 
-    return () => ctx.revert();
-  }, []);
+  //   return () => ctx.revert();
+  // }, []);
 
   return (
     <section
