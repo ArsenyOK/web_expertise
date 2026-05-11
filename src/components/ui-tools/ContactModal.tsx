@@ -1,8 +1,8 @@
-import { useLayoutEffect, useRef, useState, type FormEvent } from "react";
-import gsap from "gsap";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import Magnetic from "./Magnetic";
 import { ArrowLeft, Check, X } from "lucide-react";
 import { useMobile } from "../../hooks/useMobile";
+import { useLazyGsap } from "../../hooks/useLazyGsap";
 
 type ContactModalProps = {
   isOpen: boolean;
@@ -23,83 +23,88 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     }
   }, [isOpen]);
 
-  useLayoutEffect(() => {
-    if (!isRendered) return;
-    if (!modalRef.current || !panelRef.current) return;
+  useLazyGsap(
+    isRendered,
+    modalRef,
+    useCallback(({ gsap }, modal) => {
+      if (!panelRef.current) return;
 
-    const modal = modalRef.current;
-    const panel = panelRef.current;
-    let renderFrame: number | undefined;
+      const panel = panelRef.current;
+      let renderFrame: number | undefined;
 
-    if (isOpen) {
-      renderFrame = window.requestAnimationFrame(() => {
-        setShouldRender(true);
-      });
+      if (isOpen) {
+        renderFrame = window.requestAnimationFrame(() => {
+          setShouldRender(true);
+        });
 
-      gsap.fromTo(
-        modal,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.25, ease: "power3.out" },
-      );
+        gsap.fromTo(
+          modal,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.25, ease: "power3.out" },
+        );
 
-      gsap.fromTo(
-        panel,
-        {
-          y: isMobile ? 40 : 60,
+        gsap.fromTo(
+          panel,
+          {
+            y: isMobile ? 40 : 60,
+            opacity: 0,
+            scale: isMobile ? 1 : 0.96,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.45,
+            ease: "power3.out",
+          },
+        );
+      } else {
+        gsap.to(panel, {
+          y: isMobile ? 28 : 40,
           opacity: 0,
           scale: isMobile ? 1 : 0.96,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.45,
-          ease: "power3.out",
-        },
-      );
-    } else {
-      gsap.to(panel, {
-        y: isMobile ? 28 : 40,
-        opacity: 0,
-        scale: isMobile ? 1 : 0.96,
-        duration: 0.3,
-        ease: "power3.in",
-      });
+          duration: 0.3,
+          ease: "power3.in",
+        });
 
-      gsap.to(modal, {
-        opacity: 0,
-        duration: 0.35,
-        ease: "power3.in",
-        onComplete: () => {
-          setShouldRender(false);
-          setMode("intro");
-          document.body.style.overflow = "";
-        },
-      });
-    }
-
-    return () => {
-      if (renderFrame) {
-        window.cancelAnimationFrame(renderFrame);
+        gsap.to(modal, {
+          opacity: 0,
+          duration: 0.35,
+          ease: "power3.in",
+          onComplete: () => {
+            setShouldRender(false);
+            setMode("intro");
+            document.body.style.overflow = "";
+          },
+        });
       }
-    };
-  }, [isOpen, isRendered, isMobile]);
 
-  useLayoutEffect(() => {
-    if (!contentRef.current || !shouldRender) return;
+      return () => {
+        if (renderFrame) {
+          window.cancelAnimationFrame(renderFrame);
+        }
+      };
+    }, [isMobile, isOpen]),
+  );
 
-    gsap.fromTo(
-      contentRef.current,
-      { y: 18, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" },
-    );
-  }, [mode, shouldRender]);
+  useLazyGsap(
+    shouldRender,
+    contentRef,
+    useCallback(({ gsap }, content) => {
+      gsap.fromTo(
+        content,
+        { y: 18, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" },
+      );
+    }, []),
+    mode,
+  );
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
