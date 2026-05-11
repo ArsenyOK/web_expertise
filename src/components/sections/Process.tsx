@@ -71,7 +71,7 @@ const Process = () => {
             05
           </div>
 
-          <div className="absolute left-0 top-0 h-48 w-48 rounded-full bg-blue-500/5 blur-[52px] md:h-64 md:w-64 md:bg-blue-500/8 md:blur-3xl" />
+          <div className="absolute left-0 top-0 h-56 w-56 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_60%)] md:h-64 md:w-64 md:rounded-full md:bg-blue-500/8 md:blur-3xl" />
 
           <div className="relative z-10">
             <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
@@ -101,12 +101,10 @@ const Process = () => {
         </div>
 
         <div className="space-y-4 md:space-y-5">
-          {processSteps.map((item, index) => (
+          {processSteps.map((item) => (
             <article
               key={item.id}
-              className={`process-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl active:scale-[0.99] md:rounded-[2rem] md:bg-white/[0.04] md:p-10 ${
-                index % 2 === 0 ? "md:translate-y-10" : ""
-              }`}
+              className="process-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl active:scale-[0.99] md:rounded-[2rem] md:bg-white/[0.04] md:p-10"
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_46%)] opacity-70 transition duration-500 md:bg-none md:opacity-0 md:group-hover:opacity-100">
                 <div className="absolute -right-20 -top-20 hidden h-64 w-64 rounded-full bg-blue-500/14 blur-3xl md:block" />
