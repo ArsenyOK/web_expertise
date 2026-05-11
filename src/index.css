@@ -15,11 +15,13 @@ html.lenis body {
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   background: #050505;
+  overflow-x: clip;
   font-family:
     Inter,
     ui-sans-serif,
@@ -36,7 +38,10 @@ body {
 }
 
 .page-loader {
-  contain: layout paint;
+  contain: strict;
+  inline-size: 100%;
+  block-size: 100dvh;
+  max-inline-size: 100%;
 }
 
 .loader-ring {

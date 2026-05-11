@@ -17,35 +17,38 @@ const Projects = ({ onNavigate }: ProjectsProps) => {
   useLazyGsap(
     performanceTier === "high",
     sectionRef,
-    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
-      const ctx = gsap.context(() => {
-        const cards = gsap.utils.toArray<HTMLElement>(".project-card");
+    useCallback(
+      ({ gsap, scheduleScrollTriggerRefresh }, root) => {
+        const ctx = gsap.context(() => {
+          const cards = gsap.utils.toArray<HTMLElement>(".project-card");
 
-        gsap.set(cards, {
-          y: isMobile ? 36 : 80,
-          opacity: 0,
-          scale: isMobile ? 1 : 0.96,
-        });
+          gsap.set(cards, {
+            y: isMobile ? 36 : 80,
+            opacity: 0,
+            scale: isMobile ? 1 : 0.96,
+          });
 
-        gsap.to(cards, {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: isMobile ? 0.6 : 1,
-          stagger: isMobile ? 0.08 : 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: root,
-            start: isMobile ? "top 85%" : "top 70%",
-            once: true,
-          },
-        });
+          gsap.to(cards, {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: isMobile ? 0.6 : 1,
+            stagger: isMobile ? 0.08 : 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: root,
+              start: isMobile ? "top 85%" : "top 70%",
+              once: true,
+            },
+          });
 
-        scheduleScrollTriggerRefresh();
-      }, root);
+          scheduleScrollTriggerRefresh();
+        }, root);
 
-      return () => ctx.revert();
-    }, [isMobile]),
+        return () => ctx.revert();
+      },
+      [isMobile],
+    ),
   );
 
   return (
@@ -86,9 +89,9 @@ const Projects = ({ onNavigate }: ProjectsProps) => {
               }}
               className="project-card group relative min-h-[440px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:bg-white/[0.075]"
             >
-              <div className="absolute inset-0 opacity-70 transition duration-500 md:group-hover:opacity-100">
-                <div className="absolute -right-28 -top-28 h-64 w-64 rounded-full bg-blue-500/15 blur-3xl md:-right-24 md:-top-24 md:h-72 md:w-72 md:bg-blue-500/20" />
-                <div className="absolute -bottom-36 left-0 h-64 w-64 rounded-full bg-purple-500/8 blur-3xl md:-bottom-32 md:left-10 md:h-72 md:w-72 md:bg-purple-500/10" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.16),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.09),transparent_45%)] opacity-70 transition duration-500 md:bg-none md:group-hover:opacity-100">
+                <div className="absolute -right-24 -top-24 hidden h-64 w-64 rounded-full bg-blue-500/16 blur-3xl md:block" />
+                <div className="absolute -bottom-32 left-10 hidden h-64 w-64 rounded-full bg-purple-500/8 blur-3xl md:block" />
               </div>
 
               <div className="relative z-10 flex h-full flex-col justify-between">

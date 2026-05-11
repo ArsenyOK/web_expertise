@@ -99,8 +99,8 @@ const Clients = () => {
               key={client.id}
               className="client-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:rounded-2xl md:bg-white/[0.04] md:p-6 md:hover:-translate-y-1 md:hover:bg-white/[0.08]"
             >
-              <div className="absolute inset-0 hidden opacity-0 transition duration-500 group-hover:opacity-100 md:block">
-                <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-blue-500/15 blur-3xl" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.11),transparent_44%)] opacity-65 transition duration-500 md:bg-none md:opacity-0 md:group-hover:opacity-100">
+                <div className="absolute -right-10 -top-10 hidden h-28 w-28 rounded-full bg-blue-500/14 blur-2xl md:block" />
               </div>
 
               <div className="relative z-10 flex items-start justify-between gap-6 md:block">

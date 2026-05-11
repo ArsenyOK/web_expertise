@@ -7,6 +7,7 @@ export const useLazyGsap = <TElement extends Element>(
   enabled: boolean,
   rootRef: RefObject<TElement | null>,
   setup: (module: GsapModule, root: TElement) => GsapCleanup,
+  resetKey?: unknown,
 ) => {
   useEffect(() => {
     const root = rootRef.current;
@@ -28,5 +29,5 @@ export const useLazyGsap = <TElement extends Element>(
       isActive = false;
       cleanup?.();
     };
-  }, [enabled, rootRef, setup]);
+  }, [enabled, rootRef, setup, resetKey]);
 };

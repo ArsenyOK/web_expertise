@@ -1,12 +1,32 @@
-import { useCallback, useLayoutEffect, useRef } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { projectDetails } from "../../data/projectDetails";
 import { usePerformanceTier } from "../../hooks/usePerformanceTier";
 import { useLazyGsap } from "../../hooks/useLazyGsap";
 
+type ProjectTransitionStage =
+  | "entering-start"
+  | "entering"
+  | "covered"
+  | "exiting";
+
+type ProjectTransition = {
+  path: string;
+  stage: ProjectTransitionStage;
+};
+
 const ProjectDetailPage = () => {
   const pageRef = useRef<HTMLElement | null>(null);
+  const [projectTransition, setProjectTransition] =
+    useState<ProjectTransition | null>(null);
   const performanceTier = usePerformanceTier();
   const navigate = useNavigate();
   const { projectId } = useParams();
@@ -16,6 +36,29 @@ const ProjectDetailPage = () => {
   const handleBackToProjects = () => {
     navigate("/");
   };
+
+  const handleNextProject = (
+    event: MouseEvent<HTMLAnchorElement>,
+    nextProjectId: string,
+  ) => {
+    event.preventDefault();
+
+    const path = `/project/${nextProjectId}`;
+
+    if (projectTransition?.path === path) return;
+
+    if (performanceTier === "low") {
+      navigate(path);
+      return;
+    }
+
+    setProjectTransition({
+      path,
+      stage: "entering-start",
+    });
+  };
+
+  const transitionDuration = performanceTier === "high" ? 340 : 220;
 
   useLazyGsap(
     performanceTier !== "low",
@@ -72,7 +115,72 @@ const ProjectDetailPage = () => {
 
       return () => ctx.revert();
     }, [performanceTier]),
+    projectId,
   );
+
+  useEffect(() => {
+    if (projectTransition?.stage !== "entering-start") return;
+
+    const frame = window.requestAnimationFrame(() => {
+      setProjectTransition((currentTransition) =>
+        currentTransition?.stage === "entering-start"
+          ? { ...currentTransition, stage: "entering" }
+          : currentTransition,
+      );
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [projectTransition?.stage]);
+
+  useEffect(() => {
+    if (projectTransition?.stage !== "entering") return;
+
+    const timer = window.setTimeout(() => {
+      navigate(projectTransition.path);
+      setProjectTransition((currentTransition) =>
+        currentTransition?.stage === "entering"
+          ? { ...currentTransition, stage: "covered" }
+          : currentTransition,
+      );
+    }, transitionDuration);
+
+    return () => window.clearTimeout(timer);
+  }, [
+    navigate,
+    projectTransition?.path,
+    projectTransition?.stage,
+    transitionDuration,
+  ]);
+
+  useLayoutEffect(() => {
+    if (
+      projectTransition?.stage !== "covered" ||
+      !projectId ||
+      projectTransition.path !== `/project/${projectId}`
+    ) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      setProjectTransition((currentTransition) =>
+        currentTransition?.stage === "covered"
+          ? { ...currentTransition, stage: "exiting" }
+          : currentTransition,
+      );
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [projectId, projectTransition?.path, projectTransition?.stage]);
+
+  useEffect(() => {
+    if (projectTransition?.stage !== "exiting") return;
+
+    const timer = window.setTimeout(() => {
+      setProjectTransition(null);
+    }, transitionDuration);
+
+    return () => window.clearTimeout(timer);
+  }, [projectTransition?.stage, transitionDuration]);
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -133,7 +241,8 @@ const ProjectDetailPage = () => {
               </div>
 
               <div className="project-reveal relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl md:p-6">
-                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.16),transparent_42%)] md:bg-none" />
+                <div className="absolute -right-20 -top-20 hidden h-64 w-64 rounded-full bg-blue-500/18 blur-3xl md:block" />
 
                 <div className="relative grid gap-4 md:grid-cols-[1fr_0.85fr]">
                   <div className="rounded-2xl border border-white/10 bg-black/30 p-5">
@@ -308,6 +417,12 @@ const ProjectDetailPage = () => {
 
                   <Link
                     to={`/project/${projectData.nextProject.nextProjectId}`}
+                    onClick={(event) =>
+                      handleNextProject(
+                        event,
+                        projectData.nextProject.nextProjectId,
+                      )
+                    }
                     className="mt-8 inline-flex items-center gap-2 text-sm font-medium"
                   >
                     {projectData.nextProject.action}
@@ -319,6 +434,18 @@ const ProjectDetailPage = () => {
               </div>
             </section>
           </div>
+
+          {projectTransition && performanceTier !== "low" && (
+            <div
+              className={`pointer-events-none fixed inset-0 z-[90] bg-[#050505] transition-opacity ease-out ${
+                projectTransition.stage === "entering" ||
+                projectTransition.stage === "covered"
+                  ? "opacity-100"
+                  : "opacity-0"
+              }`}
+              style={{ transitionDuration: `${transitionDuration}ms` }}
+            />
+          )}
         </>
       )}
     </section>

@@ -42,7 +42,7 @@ const Contact = () => {
       ref={sectionRef}
       className="relative overflow-hidden px-6 py-32"
     >
-      <div className="contact-glow absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/20 blur-[130px]" />
+      <div className="contact-glow absolute left-1/2 top-1/2 h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 blur-[44px] md:h-[480px] md:w-[480px] md:bg-blue-500/16 md:blur-[84px]" />
 
       <div className="contact-content relative z-10 mx-auto max-w-5xl text-center">
         <p className="text-sm uppercase tracking-[0.3em] text-white/40">

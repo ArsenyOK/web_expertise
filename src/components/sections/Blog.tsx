@@ -91,8 +91,8 @@ const Blog = ({ onNavigate, currentPath }: BlogProps) => {
               }
             >
               <article className="blog-card group relative min-h-[260px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:min-h-[360px] md:rounded-[2rem] md:bg-white/[0.04] md:p-7 md:hover:-translate-y-2 md:hover:bg-white/[0.08]">
-                <div className="absolute inset-0 hidden opacity-0 transition duration-500 group-hover:opacity-100 md:block">
-                  <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.14),transparent_44%)] opacity-70 transition duration-500 md:bg-none md:opacity-0 md:group-hover:opacity-100">
+                  <div className="absolute -right-16 -top-16 hidden h-52 w-52 rounded-full bg-blue-500/18 blur-3xl md:block" />
                 </div>
 
                 <div className="relative z-10 flex h-full flex-col justify-between">
