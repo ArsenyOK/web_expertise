@@ -11,7 +11,8 @@ import { usePerformanceTier } from "./hooks/usePerformanceTier";
 
 const States = lazy(() => import("./components/pages/States"));
 const ProjectPage = lazy(() => import("./components/pages/ProjectItem"));
-const ContactModal = lazy(() => import("./components/ui-tools/ContactModal"));
+const loadContactModal = () => import("./components/ui-tools/ContactModal");
+const ContactModal = lazy(loadContactModal);
 const CustomCursor = lazy(() => import("./components/ui-tools/CustomCursor"));
 
 const App = () => {
@@ -27,6 +28,26 @@ const App = () => {
   useEffect(() => {
     document.documentElement.dataset.performanceTier = performanceTier;
   }, [performanceTier]);
+
+  useEffect(() => {
+    const idleCallback = window.requestIdleCallback?.(
+      () => {
+        void loadContactModal();
+      },
+      { timeout: 2000 },
+    );
+    const fallbackTimer = window.setTimeout(() => {
+      void loadContactModal();
+    }, 1200);
+
+    return () => {
+      if (idleCallback) {
+        window.cancelIdleCallback(idleCallback);
+      }
+
+      window.clearTimeout(fallbackTimer);
+    };
+  }, []);
 
   useEffect(() => {
     if (!canShowPremiumTools) return;

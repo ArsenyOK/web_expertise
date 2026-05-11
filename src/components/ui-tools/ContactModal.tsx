@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Magnetic from "./Magnetic";
 import { ArrowLeft, Check, X } from "lucide-react";
 import { useMobile } from "../../hooks/useMobile";
-import { useLazyGsap } from "../../hooks/useLazyGsap";
 
 type ContactModalProps = {
   isOpen: boolean;
@@ -11,100 +10,76 @@ type ContactModalProps = {
 
 type ModalMode = "intro" | "form" | "success";
 
+const MODAL_TRANSITION_MS = 380;
+const CONTENT_TRANSITION_MS = 170;
+
 const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
   const isMobile = useMobile();
   const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [mode, setMode] = useState<ModalMode>("intro");
+  const [displayedMode, setDisplayedMode] = useState<ModalMode>("intro");
+  const modeTimerRef = useRef<number | undefined>(undefined);
   const isRendered = isOpen || shouldRender;
 
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  const panelRef = useRef<HTMLDivElement | null>(null);
-  const contentRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(modeTimerRef.current);
+      document.body.style.overflow = "";
+    };
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+
+      const frame = window.requestAnimationFrame(() => {
+        setShouldRender(true);
+        setIsModalVisible(true);
+        setIsContentVisible(true);
+      });
+
+      return () => window.cancelAnimationFrame(frame);
     }
-  }, [isOpen]);
 
-  useLazyGsap(
-    isRendered,
-    modalRef,
-    useCallback(({ gsap }, modal) => {
-      if (!panelRef.current) return;
+    if (!shouldRender) return;
 
-      const panel = panelRef.current;
-      let renderFrame: number | undefined;
+    const frame = window.requestAnimationFrame(() => {
+      setIsModalVisible(false);
+    });
 
-      if (isOpen) {
-        renderFrame = window.requestAnimationFrame(() => {
-          setShouldRender(true);
-        });
+    const timer = window.setTimeout(() => {
+      setShouldRender(false);
+      setMode("intro");
+      setDisplayedMode("intro");
+      setIsContentVisible(false);
+      document.body.style.overflow = "";
+    }, MODAL_TRANSITION_MS);
 
-        gsap.fromTo(
-          modal,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.25, ease: "power3.out" },
-        );
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
+  }, [isOpen, shouldRender]);
 
-        gsap.fromTo(
-          panel,
-          {
-            y: isMobile ? 40 : 60,
-            opacity: 0,
-            scale: isMobile ? 1 : 0.96,
-          },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.45,
-            ease: "power3.out",
-          },
-        );
-      } else {
-        gsap.to(panel, {
-          y: isMobile ? 28 : 40,
-          opacity: 0,
-          scale: isMobile ? 1 : 0.96,
-          duration: 0.3,
-          ease: "power3.in",
-        });
+  const changeMode = (nextMode: ModalMode) => {
+    if (nextMode === mode) return;
 
-        gsap.to(modal, {
-          opacity: 0,
-          duration: 0.35,
-          ease: "power3.in",
-          onComplete: () => {
-            setShouldRender(false);
-            setMode("intro");
-            document.body.style.overflow = "";
-          },
-        });
-      }
+    window.clearTimeout(modeTimerRef.current);
+    setMode(nextMode);
+    setIsContentVisible(false);
 
-      return () => {
-        if (renderFrame) {
-          window.cancelAnimationFrame(renderFrame);
-        }
-      };
-    }, [isMobile, isOpen]),
-  );
+    modeTimerRef.current = window.setTimeout(() => {
+      setDisplayedMode(nextMode);
 
-  useLazyGsap(
-    shouldRender,
-    contentRef,
-    useCallback(({ gsap }, content) => {
-      gsap.fromTo(
-        content,
-        { y: 18, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" },
-      );
-    }, []),
-    mode,
-  );
+      window.requestAnimationFrame(() => {
+        setIsContentVisible(true);
+      });
+    }, CONTENT_TRANSITION_MS);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -165,7 +140,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
       }
 
       form.reset();
-      setMode("success");
+      changeMode("success");
 
       window.setTimeout(() => {
         onClose();
@@ -187,7 +162,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
   const primaryButton = (
     <button
       type="button"
-      onClick={() => setMode("form")}
+      onClick={() => changeMode("form")}
       className="w-full rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition active:scale-[0.98] md:w-auto md:hover:scale-105"
     >
       Email me
@@ -207,22 +182,26 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
 
   return (
     <div
-      ref={modalRef}
-      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black/70 px-4 py-4 backdrop-blur-xl md:px-6"
+      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black/80 px-4 py-4 transition-opacity duration-300 ease-out md:px-6 ${
+        isModalVisible ? "opacity-100" : "opacity-0"
+      }`}
       onClick={onClose}
     >
       <div
-        ref={panelRef}
-        className="relative max-h-[96svh] w-full max-w-3xl overflow-y-auto overflow-x-hidden rounded-[1.5rem] border border-white/10 bg-[#080808] p-4 shadow-2xl md:max-h-[92svh] md:rounded-[2rem] md:p-12"
+        className={`relative max-h-[96svh] w-full max-w-3xl transform-gpu overflow-y-auto overflow-x-hidden rounded-[1.5rem] border border-white/10 bg-[#080808] p-4 shadow-2xl transition-[opacity,transform] duration-[360ms] ease-out md:max-h-[92svh] md:rounded-[2rem] md:p-12 ${
+          isModalVisible
+            ? "translate-y-0 scale-100 opacity-100"
+            : `${isMobile ? "translate-y-4" : "translate-y-6 scale-[0.985]"} opacity-0`
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl md:h-80 md:w-80" />
 
         <div className="absolute left-5 right-5 top-5 z-20 flex items-center justify-between md:left-6 md:right-6 md:top-6">
-          {mode === "form" ? (
+          {displayedMode === "form" ? (
             <button
               type="button"
-              onClick={() => setMode("intro")}
+              onClick={() => changeMode("intro")}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/45 transition hover:bg-white/[0.07] hover:text-white"
               aria-label="Back"
             >
@@ -242,8 +221,14 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
           </button>
         </div>
 
-        <div ref={contentRef} className="relative z-10 min-w-0 pt-14">
-          {mode === "intro" ? (
+        <div
+          className={`relative z-10 min-w-0 pt-14 transition-[opacity,transform] duration-200 ease-out ${
+            isContentVisible
+              ? "translate-y-0 opacity-100"
+              : "translate-y-3 opacity-0"
+          }`}
+        >
+          {displayedMode === "intro" ? (
             <>
               <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
                 Project inquiry
@@ -272,7 +257,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                 )}
               </div>
             </>
-          ) : mode === "form" ? (
+          ) : displayedMode === "form" ? (
             <>
               <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
                 Email inquiry
