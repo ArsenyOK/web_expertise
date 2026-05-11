@@ -1,11 +1,13 @@
-import { useLayoutEffect, useRef } from "react";
-import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
+import { useCallback, useLayoutEffect, useRef } from "react";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { projectDetails } from "../../data/projectDetails";
+import { usePerformanceTier } from "../../hooks/usePerformanceTier";
+import { useLazyGsap } from "../../hooks/useLazyGsap";
 
 const ProjectDetailPage = () => {
   const pageRef = useRef<HTMLElement | null>(null);
+  const performanceTier = usePerformanceTier();
   const navigate = useNavigate();
   const { projectId } = useParams();
 
@@ -15,60 +17,62 @@ const ProjectDetailPage = () => {
     navigate("/");
   };
 
-  useLayoutEffect(() => {
-    if (!pageRef.current) return;
+  useLazyGsap(
+    performanceTier !== "low",
+    pageRef,
+    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
+      const ctx = gsap.context(() => {
+        const heroBlocks = gsap.utils.toArray<HTMLElement>(".project-reveal");
+        const sections = gsap.utils.toArray<HTMLElement>(".project-section");
 
-    const ctx = gsap.context(() => {
-      const heroBlocks = gsap.utils.toArray<HTMLElement>(".project-reveal");
-      const sections = gsap.utils.toArray<HTMLElement>(".project-section");
-
-      gsap.set(heroBlocks, {
-        y: 48,
-        autoAlpha: 0,
-        force3D: true,
-        willChange: "transform, opacity",
-      });
-
-      gsap.to(heroBlocks, {
-        y: 0,
-        autoAlpha: 1,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: "power3.out",
-        onComplete: () => {
-          gsap.set(heroBlocks, { clearProps: "willChange" });
-        },
-      });
-
-      sections.forEach((section) => {
-        gsap.set(section, {
-          y: 44,
+        gsap.set(heroBlocks, {
+          y: 48,
           autoAlpha: 0,
           force3D: true,
           willChange: "transform, opacity",
         });
 
-        gsap.to(section, {
+        gsap.to(heroBlocks, {
           y: 0,
           autoAlpha: 1,
-          duration: 0.85,
+          duration: performanceTier === "high" ? 0.8 : 0.45,
+          stagger: performanceTier === "high" ? 0.12 : 0.06,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 82%",
-            once: true,
-          },
           onComplete: () => {
-            gsap.set(section, { clearProps: "willChange" });
+            gsap.set(heroBlocks, { clearProps: "willChange" });
           },
         });
-      });
 
-      scheduleScrollTriggerRefresh();
-    }, pageRef);
+        sections.forEach((section) => {
+          gsap.set(section, {
+            y: 44,
+            autoAlpha: 0,
+            force3D: true,
+            willChange: "transform, opacity",
+          });
 
-    return () => ctx.revert();
-  }, [projectId]);
+          gsap.to(section, {
+            y: 0,
+            autoAlpha: 1,
+            duration: performanceTier === "high" ? 0.85 : 0.5,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 82%",
+              once: true,
+            },
+            onComplete: () => {
+              gsap.set(section, { clearProps: "willChange" });
+            },
+          });
+        });
+
+        scheduleScrollTriggerRefresh();
+      }, root);
+
+      return () => ctx.revert();
+    }, [performanceTier]),
+  );
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });

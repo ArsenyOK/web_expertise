@@ -90,3 +90,20 @@ body {
     animation: none;
   }
 }
+
+[data-performance-tier="low"] [class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+}
+
+[data-performance-tier="low"] [class*="blur-"] {
+  filter: none !important;
+}
+
+[data-performance-tier="low"] * {
+  scroll-behavior: auto !important;
+}
+
+[data-performance-tier="medium"] .hero-glow {
+  filter: blur(42px) !important;
+  opacity: 0.75;
+}

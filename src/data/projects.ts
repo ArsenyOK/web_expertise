@@ -24,11 +24,11 @@ export const projects = [
     status: "Template Project",
   },
   {
-    id: "mobile-product-mvp",
-    title: "Mobile Product MVP",
-    type: "Mobile Application",
+    id: "rair-tech",
+    title: "RAIR Technologies",
+    type: "Web3 / Blockchain Platform",
     description:
-      "A polished cross-platform mobile app concept built for fast validation and clean user experience.",
-    status: "Template Project",
+      "A blockchain-based Web3 platform focused on digital ownership, MetaMask integration, and smart contract interactions.",
+    status: "Production Project",
   },
 ];

@@ -1,41 +1,45 @@
-import { useLayoutEffect, useRef } from "react";
-import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
+import { useCallback, useRef } from "react";
 import { expertise } from "../../data/expertise";
 import { useMobile } from "../../hooks/useMobile";
+import { usePerformanceTier } from "../../hooks/usePerformanceTier";
+import { useLazyGsap } from "../../hooks/useLazyGsap";
 
 const Expertise = () => {
   const isMobile = useMobile();
+  const performanceTier = usePerformanceTier();
   const sectionRef = useRef<HTMLElement | null>(null);
 
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+  useLazyGsap(
+    performanceTier === "high",
+    sectionRef,
+    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
+      const ctx = gsap.context(() => {
+        const cards = gsap.utils.toArray<HTMLElement>(".expertise-card");
 
-    const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLElement>(".expertise-card");
+        gsap.set(cards, {
+          y: isMobile ? 32 : 80,
+          opacity: 0,
+        });
 
-      gsap.set(cards, {
-        y: isMobile ? 32 : 80,
-        opacity: 0,
-      });
+        gsap.to(cards, {
+          y: 0,
+          opacity: 1,
+          duration: isMobile ? 0.55 : 1,
+          ease: "power3.out",
+          stagger: isMobile ? 0.08 : 0.15,
+          scrollTrigger: {
+            trigger: root,
+            start: isMobile ? "top 85%" : "top 75%",
+            once: true,
+          },
+        });
 
-      gsap.to(cards, {
-        y: 0,
-        opacity: 1,
-        duration: isMobile ? 0.55 : 1,
-        ease: "power3.out",
-        stagger: isMobile ? 0.08 : 0.15,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: isMobile ? "top 85%" : "top 75%",
-          once: true,
-        },
-      });
+        scheduleScrollTriggerRefresh();
+      }, root);
 
-      scheduleScrollTriggerRefresh();
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [isMobile]);
+      return () => ctx.revert();
+    }, [isMobile]),
+  );
 
   return (
     <section

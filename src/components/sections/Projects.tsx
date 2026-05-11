@@ -1,8 +1,9 @@
-import { useLayoutEffect, useRef } from "react";
-import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
+import { useCallback, useRef } from "react";
 import { useMobile } from "../../hooks/useMobile";
 import { projects } from "../../data/projects";
 import { Link } from "react-router-dom";
+import { usePerformanceTier } from "../../hooks/usePerformanceTier";
+import { useLazyGsap } from "../../hooks/useLazyGsap";
 
 type ProjectsProps = {
   onNavigate: (path: string, hash?: string) => void;
@@ -10,39 +11,42 @@ type ProjectsProps = {
 
 const Projects = ({ onNavigate }: ProjectsProps) => {
   const isMobile = useMobile();
+  const performanceTier = usePerformanceTier();
   const sectionRef = useRef<HTMLElement | null>(null);
 
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+  useLazyGsap(
+    performanceTier === "high",
+    sectionRef,
+    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
+      const ctx = gsap.context(() => {
+        const cards = gsap.utils.toArray<HTMLElement>(".project-card");
 
-    const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLElement>(".project-card");
+        gsap.set(cards, {
+          y: isMobile ? 36 : 80,
+          opacity: 0,
+          scale: isMobile ? 1 : 0.96,
+        });
 
-      gsap.set(cards, {
-        y: isMobile ? 36 : 80,
-        opacity: 0,
-        scale: isMobile ? 1 : 0.96,
-      });
+        gsap.to(cards, {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: isMobile ? 0.6 : 1,
+          stagger: isMobile ? 0.08 : 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: root,
+            start: isMobile ? "top 85%" : "top 70%",
+            once: true,
+          },
+        });
 
-      gsap.to(cards, {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: isMobile ? 0.6 : 1,
-        stagger: isMobile ? 0.08 : 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: isMobile ? "top 85%" : "top 70%",
-          once: true,
-        },
-      });
+        scheduleScrollTriggerRefresh();
+      }, root);
 
-      scheduleScrollTriggerRefresh();
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [isMobile]);
+      return () => ctx.revert();
+    }, [isMobile]),
+  );
 
   return (
     <section
