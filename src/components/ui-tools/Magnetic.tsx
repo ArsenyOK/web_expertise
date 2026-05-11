@@ -1,5 +1,4 @@
-import { type ReactNode, useLayoutEffect, useRef } from "react";
-import { gsap } from "../../lib/gsap";
+import { type ReactNode, useEffect, useRef } from "react";
 
 type MagneticProps = {
   children: ReactNode;
@@ -9,27 +8,29 @@ type MagneticProps = {
 const Magnetic = ({ children, strength = 0.35 }: MagneticProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const rectRef = useRef<DOMRect | null>(null);
-  const quickXRef = useRef<((value: number) => void) | null>(null);
-  const quickYRef = useRef<((value: number) => void) | null>(null);
+  const frameRef = useRef<number | undefined>(undefined);
+  const targetRef = useRef({ x: 0, y: 0 });
 
-  useLayoutEffect(() => {
-    if (!ref.current) return;
-
+  useEffect(() => {
     const element = ref.current;
 
-    quickXRef.current = gsap.quickTo(element, "x", {
-      duration: 0.35,
-      ease: "power3.out",
-    });
-    quickYRef.current = gsap.quickTo(element, "y", {
-      duration: 0.35,
-      ease: "power3.out",
-    });
+    if (!element) return;
 
     return () => {
-      gsap.killTweensOf(element);
+      if (frameRef.current !== undefined) {
+        window.cancelAnimationFrame(frameRef.current);
+      }
     };
   }, []);
+
+  const scheduleTransform = () => {
+    if (!ref.current || frameRef.current !== undefined) return;
+
+    frameRef.current = window.requestAnimationFrame(() => {
+      frameRef.current = undefined;
+      ref.current!.style.transform = `translate3d(${targetRef.current.x}px, ${targetRef.current.y}px, 0)`;
+    });
+  };
 
   const handleMouseEnter = () => {
     if (!ref.current) return;
@@ -45,22 +46,20 @@ const Magnetic = ({ children, strength = 0.35 }: MagneticProps) => {
     const x = event.clientX - rect.left - rect.width / 2;
     const y = event.clientY - rect.top - rect.height / 2;
 
-    quickXRef.current?.(x * strength);
-    quickYRef.current?.(y * strength);
+    targetRef.current = {
+      x: x * strength,
+      y: y * strength,
+    };
+
+    scheduleTransform();
   };
 
   const handleMouseLeave = () => {
     if (!ref.current) return;
 
     rectRef.current = null;
-
-    gsap.to(ref.current, {
-      x: 0,
-      y: 0,
-      duration: 0.45,
-      ease: "elastic.out(1, 0.35)",
-      overwrite: true,
-    });
+    targetRef.current = { x: 0, y: 0 };
+    ref.current.style.transform = "translate3d(0, 0, 0)";
   };
 
   return (
@@ -69,7 +68,7 @@ const Magnetic = ({ children, strength = 0.35 }: MagneticProps) => {
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="inline-block"
+      className="inline-block transition-transform duration-300 ease-out"
     >
       {children}
     </div>

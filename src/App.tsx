@@ -1,37 +1,70 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-// import CustomCursor from "./components/ui-tools/CustomCursor";
-// import SmoothScroll from "./components/ui-tools/SmoothScroll";
-import ContactModal from "./components/ui-tools/ContactModal";
 import PageLoader from "./components/ui-tools/PageLoader";
 import { useMobile } from "./hooks/useMobile";
 import Home from "./layout/Home";
 import { useNavigateTo } from "./hooks/useNavigateTo";
 import ScrollToTop from "./components/ui-tools/ScrollToTop";
+import { usePerformanceTier } from "./hooks/usePerformanceTier";
 
 const States = lazy(() => import("./components/pages/States"));
 const ProjectPage = lazy(() => import("./components/pages/ProjectItem"));
+const ContactModal = lazy(() => import("./components/ui-tools/ContactModal"));
+const CustomCursor = lazy(() => import("./components/ui-tools/CustomCursor"));
 
 const App = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [hasOpenedContact, setHasOpenedContact] = useState(false);
+  const [showPremiumTools, setShowPremiumTools] = useState(false);
   const isMobile = useMobile();
+  const performanceTier = usePerformanceTier();
+  const canShowPremiumTools = !isMobile && performanceTier === "high";
   const location = useLocation();
   const { pageLoading, navigateTo } = useNavigateTo();
+
+  useEffect(() => {
+    document.documentElement.dataset.performanceTier = performanceTier;
+  }, [performanceTier]);
+
+  useEffect(() => {
+    if (!canShowPremiumTools) return;
+
+    const idleCallback = window.requestIdleCallback?.(
+      () => setShowPremiumTools(true),
+      { timeout: 1200 },
+    );
+    const fallbackTimer = window.setTimeout(
+      () => setShowPremiumTools(true),
+      800,
+    );
+
+    return () => {
+      if (idleCallback) {
+        window.cancelIdleCallback(idleCallback);
+      }
+
+      window.clearTimeout(fallbackTimer);
+    };
+  }, [canShowPremiumTools]);
+
+  const openContact = () => {
+    setHasOpenedContact(true);
+    setIsContactOpen(true);
+  };
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#050505] text-white">
       <ScrollToTop />
-      {!isMobile && (
-        <>
-          {/* <SmoothScroll /> */}
-          {/* <CustomCursor /> */}
-        </>
+      {canShowPremiumTools && showPremiumTools && (
+        <Suspense fallback={null}>
+          <CustomCursor />
+        </Suspense>
       )}
       <Header
         currentPath={location.pathname}
-        onContactOpen={() => setIsContactOpen(true)}
+        onContactOpen={openContact}
       />
       <Routes>
         <Route
@@ -40,7 +73,7 @@ const App = () => {
             <Home
               currentPath={location.pathname}
               navigateTo={navigateTo}
-              onContactOpen={() => setIsContactOpen(true)}
+              onContactOpen={openContact}
             />
           }
         />
@@ -66,17 +99,21 @@ const App = () => {
             <Home
               currentPath={location.pathname}
               navigateTo={navigateTo}
-              onContactOpen={() => setIsContactOpen(true)}
+              onContactOpen={openContact}
             />
           }
         />
       </Routes>
       <Footer />
       <PageLoader isVisible={pageLoading} />
-      <ContactModal
-        isOpen={isContactOpen}
-        onClose={() => setIsContactOpen(false)}
-      />
+      {hasOpenedContact && (
+        <Suspense fallback={null}>
+          <ContactModal
+            isOpen={isContactOpen}
+            onClose={() => setIsContactOpen(false)}
+          />
+        </Suspense>
+      )}
     </main>
   );
 };

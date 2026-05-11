@@ -6,7 +6,6 @@ import {
   Shield,
   Users,
   Brain,
-  Smartphone,
   LayoutDashboard,
   Zap,
   Rocket,
@@ -425,63 +424,63 @@ reduceBundleSize();`,
 
     nextProject: {
       label: "Next Project",
-      nextProjectId: "mobile-product-mvp",
-      title: "Mobile Product MVP",
+      nextProjectId: "rair-tech",
+      title: "RAIR Technologies",
       description:
-        "A polished cross-platform mobile app concept focused on speed and validation.",
+        "A blockchain-based Web3 platform focused on digital ownership, MetaMask integration, and smart contract interactions.",
       action: "View Project",
     },
   },
 
   {
-    id: "mobile-product-mvp",
+    id: "rair-tech",
 
     backLabel: "Back to projects",
 
     hero: {
-      type: "Mobile Application",
-      title: "Mobile Product MVP",
+      type: "Web3 / Blockchain Platform",
+      title: "RAIR Technologies",
       description:
-        "A polished cross-platform mobile app concept built for fast validation and clean user experience.",
-      primaryAction: "Preview App",
-      secondaryAction: "Mobile Architecture",
+        "A Web3 platform built around blockchain technology, focused on digital ownership, smart contracts, and decentralized user experiences.",
+      primaryAction: "View Platform",
+      secondaryAction: "Blockchain Architecture",
     },
 
     preview: {
-      eyebrow: "Mobile Flow",
-      title: "User onboarding experience",
+      eyebrow: "Web3 Experience",
+      title: "Blockchain-powered digital platform",
 
       stats: [
-        { value: "4.9", label: "UX Score" },
-        { value: "28%", label: "Retention" },
-        { value: "2.1s", label: "Load Time" },
-        { value: "iOS/Android", label: "Platforms" },
+        { value: "Web3", label: "Blockchain App" },
+        { value: "React", label: "Frontend Stack" },
+        { value: "MetaMask", label: "Wallet Integration" },
+        { value: "Smart Contracts", label: "Core Logic" },
       ],
 
       feedback: [
         {
           type: "success",
-          text: "Smooth onboarding experience",
+          text: "Wallet integration completed",
         },
         {
           type: "warning",
-          text: "Push notifications disabled",
+          text: "Gas optimization in progress",
         },
       ],
 
-      codeTitle: "mobile-flow.tsx",
+      codeTitle: "wallet-connect.ts",
 
-      code: `navigate("Onboarding");
-enableBiometrics();
-optimizeAnimations();`,
+      code: `connectMetaMask();
+initializeSmartContracts();
+syncWalletState();`,
     },
 
     overview: {
       title: "Overview",
 
       paragraphs: [
-        "A cross-platform MVP designed for fast validation, rapid iteration, and premium user experience.",
-        "The focus was on clean architecture, responsive UI, and scalable mobile foundations.",
+        "Worked on a Web3 blockchain platform focused on decentralized technologies, wallet integrations, and blockchain-based user interactions.",
+        "Contributed to frontend development, UI/UX implementation, MetaMask integration, Docker-based environments, and smart contract interactions using React and modern web technologies.",
       ],
     },
 
@@ -490,24 +489,24 @@ optimizeAnimations();`,
 
       items: [
         {
-          value: "2.1s",
-          label: "Launch speed",
-          icon: Zap,
+          value: "Web3",
+          label: "Blockchain integration",
+          icon: Bolt,
         },
         {
-          value: "+40%",
-          label: "User engagement",
+          value: "MetaMask",
+          label: "Wallet connectivity",
+          icon: Shield,
+        },
+        {
+          value: "Docker",
+          label: "Containerized setup",
+          icon: Database,
+        },
+        {
+          value: "UI/UX",
+          label: "Modern user experience",
           icon: Users,
-        },
-        {
-          value: "Cross-platform",
-          label: "Shared codebase",
-          icon: Smartphone,
-        },
-        {
-          value: "MVP",
-          label: "Rapid delivery",
-          icon: Rocket,
         },
       ],
     },
@@ -516,10 +515,10 @@ optimizeAnimations();`,
       title: "Key Features",
 
       items: [
-        "Cross-platform mobile UI",
-        "Authentication flows",
-        "Push notification integration",
-        "Fast MVP iteration cycle",
+        "MetaMask wallet integration",
+        "Smart contract interaction",
+        "Responsive Web3 UI",
+        "Blockchain-based workflows",
       ],
     },
 
@@ -527,14 +526,15 @@ optimizeAnimations();`,
       title: "Tech Stack",
 
       items: [
-        "React Native",
-        "Expo",
-        "TypeScript",
-        "Firebase",
-        "Node.js",
-        "REST API",
-        "Tailwind",
-        "Vercel",
+        "React",
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "Web3",
+        "Blockchain",
+        "MetaMask",
+        "Smart Contracts",
+        "Docker",
       ],
     },
 
@@ -543,20 +543,20 @@ optimizeAnimations();`,
 
       items: [
         {
-          label: "Mobile UI",
-          icon: Smartphone,
+          label: "Frontend UI",
+          icon: Code,
         },
         {
-          label: "Authentication",
+          label: "Wallet Integration",
           icon: Shield,
         },
         {
-          label: "API Layer",
-          icon: Code2,
+          label: "Smart Contracts",
+          icon: Database,
         },
         {
-          label: "Realtime Sync",
-          icon: Database,
+          label: "Blockchain Layer",
+          icon: Code2,
         },
       ],
     },

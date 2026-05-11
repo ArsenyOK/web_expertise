@@ -1,8 +1,9 @@
-import { useLayoutEffect, useRef, type MouseEvent } from "react";
-import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
+import { useCallback, useRef, type MouseEvent } from "react";
 import { blogPosts } from "../../data/blog";
 import { useMobile } from "../../hooks/useMobile";
 import { Link } from "react-router-dom";
+import { usePerformanceTier } from "../../hooks/usePerformanceTier";
+import { useLazyGsap } from "../../hooks/useLazyGsap";
 
 type BlogProps = {
   onNavigate: (path: string, hash?: string) => void;
@@ -11,6 +12,7 @@ type BlogProps = {
 
 const Blog = ({ onNavigate, currentPath }: BlogProps) => {
   const isMobile = useMobile();
+  const performanceTier = usePerformanceTier();
   const sectionRef = useRef<HTMLElement | null>(null);
 
   const handleRouteClick = (
@@ -22,35 +24,37 @@ const Blog = ({ onNavigate, currentPath }: BlogProps) => {
     onNavigate(path, hash);
   };
 
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+  useLazyGsap(
+    performanceTier === "high",
+    sectionRef,
+    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
+      const ctx = gsap.context(() => {
+        const cards = gsap.utils.toArray<HTMLElement>(".blog-card");
 
-    const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLElement>(".blog-card");
+        gsap.set(cards, {
+          y: isMobile ? 32 : 70,
+          opacity: 0,
+        });
 
-      gsap.set(cards, {
-        y: isMobile ? 32 : 70,
-        opacity: 0,
-      });
+        gsap.to(cards, {
+          y: 0,
+          opacity: 1,
+          duration: isMobile ? 0.55 : 0.9,
+          stagger: isMobile ? 0.08 : 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: root,
+            start: isMobile ? "top 85%" : "top 70%",
+            once: true,
+          },
+        });
 
-      gsap.to(cards, {
-        y: 0,
-        opacity: 1,
-        duration: isMobile ? 0.55 : 0.9,
-        stagger: isMobile ? 0.08 : 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: isMobile ? "top 85%" : "top 70%",
-          once: true,
-        },
-      });
+        scheduleScrollTriggerRefresh();
+      }, root);
 
-      scheduleScrollTriggerRefresh();
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [isMobile]);
+      return () => ctx.revert();
+    }, [isMobile]),
+  );
 
   return (
     <section

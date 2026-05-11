@@ -1,7 +1,7 @@
-import { useLayoutEffect, useRef } from "react";
-import { gsap, ScrollTrigger, scheduleScrollTriggerRefresh } from "../lib/gsap";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/images";
+import { usePerformanceTier } from "../hooks/usePerformanceTier";
 
 type HeaderProps = {
   currentPath: string;
@@ -11,40 +11,49 @@ type HeaderProps = {
 const Header = ({ currentPath, onContactOpen }: HeaderProps) => {
   const headerRef = useRef<HTMLElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
+  const performanceTier = usePerformanceTier();
 
-  useLayoutEffect(() => {
-    if (!progressRef.current) return;
+  useEffect(() => {
+    if (
+      !progressRef.current ||
+      currentPath !== "/" ||
+      performanceTier === "low"
+    ) {
+      return;
+    }
 
-    const ctx = gsap.context(() => {
-      const progress = progressRef.current;
-      if (!progress) return;
+    const progress = progressRef.current;
+    let frame: number | undefined;
 
-      gsap.set(progress, {
-        scaleX: 0,
-        transformOrigin: "left center",
-      });
+    const updateProgress = () => {
+      frame = undefined;
 
-      const trigger = ScrollTrigger.create({
-        start: 0,
-        end: () => ScrollTrigger.maxScroll(window),
-        scrub: true,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          gsap.set(progress, {
-            scaleX: self.progress,
-          });
-        },
-      });
+      const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progressValue = maxScroll > 0 ? window.scrollY / maxScroll : 0;
 
-      scheduleScrollTriggerRefresh();
+      progress.style.transform = `scaleX(${Math.min(progressValue, 1)})`;
+    };
 
-      return () => {
-        trigger.kill();
-      };
-    }, headerRef);
+    const scheduleUpdate = () => {
+      if (frame !== undefined) return;
 
-    return () => ctx.revert();
-  }, []);
+      frame = window.requestAnimationFrame(updateProgress);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      if (frame !== undefined) {
+        window.cancelAnimationFrame(frame);
+      }
+
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+    };
+  }, [currentPath, performanceTier]);
 
   return (
     <header
@@ -82,11 +91,12 @@ const Header = ({ currentPath, onContactOpen }: HeaderProps) => {
         </button>
       </div>
 
-      {currentPath === "/" && (
+      {currentPath === "/" && performanceTier !== "low" && (
         <div className="absolute bottom-0 left-0 h-[1px] w-full bg-white/10">
           <div
             ref={progressRef}
-            className="h-full w-full origin-left scale-x-0 bg-white"
+            className="h-full w-full origin-left bg-white"
+            style={{ transform: "scaleX(0)" }}
           />
         </div>
       )}

@@ -1,7 +1,7 @@
-import { /*useLayoutEffect,*/ useRef } from "react";
-// import gsap from "gsap";
+import { useRef } from "react";
 import Magnetic from "../ui-tools/Magnetic";
 import { useMobile } from "../../hooks/useMobile";
+import { usePerformanceTier } from "../../hooks/usePerformanceTier";
 
 type HeroProps = {
   onContactOpen: () => void;
@@ -9,93 +9,9 @@ type HeroProps = {
 
 const Hero = ({ onContactOpen }: HeroProps) => {
   const isMobile = useMobile();
+  const performanceTier = usePerformanceTier();
+  const useMagnetic = !isMobile && performanceTier === "high";
   const heroRef = useRef<HTMLElement | null>(null);
-
-  // useLayoutEffect(() => {
-  //   if (!heroRef.current) return;
-
-  //   const isMobileAnimation = window.matchMedia("(max-width: 767px)").matches;
-
-  //   const ctx = gsap.context(() => {
-  //     const label = ".hero-label";
-  //     const titleLines = ".hero-title span";
-  //     const content = ".hero-text, .hero-actions";
-
-  //     gsap.set([label, titleLines, content], {
-  //       autoAlpha: 0,
-  //       force3D: true,
-  //       willChange: "transform, opacity",
-  //     });
-
-  //     const tl = gsap.timeline({
-  //       defaults: {
-  //         ease: "power3.out",
-  //       },
-  //       onComplete: () => {
-  //         gsap.set([label, titleLines, content], {
-  //           clearProps: "willChange",
-  //         });
-  //       },
-  //     });
-
-  //     tl.fromTo(
-  //       label,
-  //       {
-  //         y: isMobileAnimation ? 10 : 24,
-  //         autoAlpha: 0,
-  //       },
-  //       {
-  //         y: 0,
-  //         autoAlpha: 1,
-  //         duration: isMobileAnimation ? 0.45 : 0.8,
-  //       },
-  //     );
-
-  //     tl.fromTo(
-  //       titleLines,
-  //       {
-  //         yPercent: isMobileAnimation ? 28 : 100,
-  //         autoAlpha: 0,
-  //       },
-  //       {
-  //         yPercent: 0,
-  //         autoAlpha: 1,
-  //         duration: isMobileAnimation ? 0.65 : 1,
-  //         stagger: isMobileAnimation ? 0.05 : 0.12,
-  //         ease: isMobileAnimation ? "power3.out" : "power4.out",
-  //       },
-  //       isMobileAnimation ? "-=0.1" : "-=0.3",
-  //     );
-
-  //     tl.fromTo(
-  //       content,
-  //       {
-  //         y: isMobileAnimation ? 12 : 32,
-  //         autoAlpha: 0,
-  //       },
-  //       {
-  //         y: 0,
-  //         autoAlpha: 1,
-  //         duration: isMobileAnimation ? 0.55 : 0.9,
-  //         stagger: 0.1,
-  //       },
-  //       isMobileAnimation ? "-=0.2" : "-=0.3",
-  //     );
-
-  //     if (!isMobileAnimation) {
-  //       gsap.to(".hero-glow", {
-  //         scale: 1.15,
-  //         opacity: 0.9,
-  //         duration: 3,
-  //         repeat: -1,
-  //         yoyo: true,
-  //         ease: "sine.inOut",
-  //       });
-  //     }
-  //   }, heroRef);
-
-  //   return () => ctx.revert();
-  // }, []);
 
   return (
     <section
@@ -112,9 +28,9 @@ const Hero = ({ onContactOpen }: HeroProps) => {
         </p>
 
         <h1 className="hero-title max-w-6xl overflow-hidden text-[clamp(3.25rem,15vw,5.8rem)] font-semibold leading-[0.92] tracking-[-0.065em] md:text-8xl lg:text-9xl">
-          <span className="block will-change-transform">I build</span>
-          <span className="block will-change-transform">web, mobile</span>
-          <span className="block will-change-transform">and AI products.</span>
+          <span className="block">I build</span>
+          <span className="block">web, mobile</span>
+          <span className="block">and AI products.</span>
         </h1>
 
         <p className="hero-text mt-7 max-w-xl text-base leading-7 text-white/60 md:mt-8 md:max-w-2xl md:text-xl md:leading-8">
@@ -124,7 +40,7 @@ const Hero = ({ onContactOpen }: HeroProps) => {
         </p>
 
         <div className="hero-actions mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row md:mt-10 md:gap-4">
-          {isMobile ? (
+          {!useMagnetic ? (
             <>
               <button
                 type="button"

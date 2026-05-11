@@ -1,66 +1,70 @@
-import { useLayoutEffect, useRef } from "react";
-import { gsap, scheduleScrollTriggerRefresh } from "../../lib/gsap";
+import { useCallback, useRef } from "react";
 import { clients } from "../../data/clients";
 import { useMobile } from "../../hooks/useMobile";
+import { usePerformanceTier } from "../../hooks/usePerformanceTier";
+import { useLazyGsap } from "../../hooks/useLazyGsap";
 
 const Clients = () => {
   const isMobile = useMobile();
+  const performanceTier = usePerformanceTier();
   const sectionRef = useRef<HTMLElement | null>(null);
 
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+  useLazyGsap(
+    performanceTier === "high",
+    sectionRef,
+    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
+      const ctx = gsap.context(() => {
+        const cards = gsap.utils.toArray<HTMLElement>(".client-card");
 
-    const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLElement>(".client-card");
+        const statement = root.querySelector(".clients-statement") as
+          | HTMLElement
+          | null;
 
-      const statement = sectionRef.current?.querySelector(
-        ".clients-statement",
-      ) as HTMLElement | null;
-
-      gsap.set(cards, {
-        y: isMobile ? 32 : 60,
-        opacity: 0,
-      });
-
-      if (statement) {
-        gsap.set(statement, {
-          y: isMobile ? 28 : 40,
+        gsap.set(cards, {
+          y: isMobile ? 32 : 60,
           opacity: 0,
         });
-      }
 
-      gsap.to(cards, {
-        y: 0,
-        opacity: 1,
-        duration: isMobile ? 0.55 : 0.9,
-        stagger: isMobile ? 0.08 : 0.12,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: isMobile ? "top 85%" : "top 75%",
-          once: true,
-        },
-      });
+        if (statement) {
+          gsap.set(statement, {
+            y: isMobile ? 28 : 40,
+            opacity: 0,
+          });
+        }
 
-      if (statement) {
-        gsap.to(statement, {
+        gsap.to(cards, {
           y: 0,
           opacity: 1,
-          duration: isMobile ? 0.65 : 1,
+          duration: isMobile ? 0.55 : 0.9,
+          stagger: isMobile ? 0.08 : 0.12,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: statement,
-            start: isMobile ? "top 90%" : "top 80%",
+            trigger: root,
+            start: isMobile ? "top 85%" : "top 75%",
             once: true,
           },
         });
-      }
 
-      scheduleScrollTriggerRefresh();
-    }, sectionRef);
+        if (statement) {
+          gsap.to(statement, {
+            y: 0,
+            opacity: 1,
+            duration: isMobile ? 0.65 : 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: statement,
+              start: isMobile ? "top 90%" : "top 80%",
+              once: true,
+            },
+          });
+        }
 
-    return () => ctx.revert();
-  }, [isMobile]);
+        scheduleScrollTriggerRefresh();
+      }, root);
+
+      return () => ctx.revert();
+    }, [isMobile]),
+  );
 
   return (
     <section
