@@ -5,7 +5,7 @@ type PageLoaderProps = {
 const PageLoader = ({ isVisible }: PageLoaderProps) => {
   return (
     <div
-      className={`page-loader fixed inset-0 z-[200] grid place-items-center bg-[#050505] transition-opacity duration-300 ${
+      className={`page-loader fixed inset-0 z-[200] grid place-items-center overflow-hidden bg-[#050505] transition-opacity duration-300 ${
         isVisible
           ? "pointer-events-auto opacity-100"
           : "pointer-events-none opacity-0"
