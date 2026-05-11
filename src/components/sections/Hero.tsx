@@ -18,7 +18,7 @@ const Hero = ({ onContactOpen }: HeroProps) => {
       ref={heroRef}
       className="relative flex min-h-[100svh] items-center overflow-hidden px-5 pb-16 pt-28 sm:px-6 md:min-h-screen md:pb-0"
     >
-      <div className="hero-glow absolute left-1/2 top-[42%] h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/12 blur-[60px] md:top-1/2 md:h-[520px] md:w-[520px] md:bg-blue-500/20 md:blur-[120px]" />
+      <div className="hero-glow absolute left-1/2 top-[42%] h-[260px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/8 blur-[28px] md:top-1/2 md:h-[480px] md:w-[480px] md:bg-blue-500/16 md:blur-[80px]" />
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.07),transparent_40%)] md:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_35%)]" />
 

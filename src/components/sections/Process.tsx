@@ -68,7 +68,7 @@ const Process = () => {
             05
           </div>
 
-          <div className="absolute left-0 top-0 h-56 w-56 rounded-full bg-blue-500/8 blur-3xl md:h-72 md:w-72 md:bg-blue-500/10" />
+          <div className="absolute left-0 top-0 h-48 w-48 rounded-full bg-blue-500/6 blur-2xl md:h-64 md:w-64 md:bg-blue-500/8 md:blur-3xl" />
 
           <div className="relative z-10">
             <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
@@ -106,7 +106,7 @@ const Process = () => {
               }`}
             >
               <div className="absolute inset-0 hidden opacity-0 transition duration-500 group-hover:opacity-100 md:block">
-                <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-blue-500/15 blur-3xl" />
+                <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-blue-500/12 blur-2xl md:h-64 md:w-64 md:bg-blue-500/14 md:blur-3xl" />
               </div>
 
               <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-8">

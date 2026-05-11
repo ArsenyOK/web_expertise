@@ -241,7 +241,7 @@ const ProjectDetailPage = () => {
               </div>
 
               <div className="project-reveal relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl md:p-6">
-                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
+                <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-blue-500/14 blur-2xl md:-right-20 md:-top-20 md:h-64 md:w-64 md:bg-blue-500/18 md:blur-3xl" />
 
                 <div className="relative grid gap-4 md:grid-cols-[1fr_0.85fr]">
                   <div className="rounded-2xl border border-white/10 bg-black/30 p-5">
