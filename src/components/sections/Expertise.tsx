@@ -71,8 +71,8 @@ const Expertise = () => {
               key={item.id}
               className="expertise-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:rounded-2xl md:bg-white/5 md:p-6 md:hover:bg-white/10"
             >
-              <div className="absolute inset-0 hidden opacity-0 transition group-hover:opacity-100 md:block">
-                <div className="absolute -left-8 -top-8 h-32 w-32 rounded-full bg-blue-500/10 blur-[48px] md:h-36 md:w-36 md:bg-blue-500/18 md:blur-2xl" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_46%)] opacity-70 transition md:bg-none md:opacity-0 md:group-hover:opacity-100">
+                <div className="absolute -left-8 -top-8 hidden h-36 w-36 rounded-full bg-blue-500/18 blur-2xl md:block" />
               </div>
 
               <div className="relative z-10 mb-8 flex items-center justify-between md:mb-0 md:block">

@@ -195,7 +195,8 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-blue-500/9 blur-[56px] md:-right-28 md:-top-28 md:h-72 md:w-72 md:bg-blue-500/16 md:blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.14),transparent_44%)] md:bg-none" />
+        <div className="pointer-events-none absolute -right-28 -top-28 hidden h-72 w-72 rounded-full bg-blue-500/16 blur-3xl md:block" />
 
         <div className="absolute left-5 right-5 top-5 z-20 flex items-center justify-between md:left-6 md:right-6 md:top-6">
           {displayedMode === "form" ? (
@@ -320,7 +321,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
           ) : (
             <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
               <div className="relative mb-8 flex h-24 w-24 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]">
-                <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-[36px] md:bg-blue-500/18 md:blur-2xl" />
+                <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.16),transparent_62%)] md:bg-blue-500/18 md:blur-2xl" />
                 <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white text-black">
                   <Check size={26} />
                 </div>

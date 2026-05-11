@@ -12,47 +12,50 @@ const Process = () => {
   useLazyGsap(
     performanceTier === "high",
     sectionRef,
-    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
-      const ctx = gsap.context(() => {
-        const cards = gsap.utils.toArray<HTMLElement>(".process-card");
+    useCallback(
+      ({ gsap, scheduleScrollTriggerRefresh }, root) => {
+        const ctx = gsap.context(() => {
+          const cards = gsap.utils.toArray<HTMLElement>(".process-card");
 
-        gsap.set(cards, {
-          y: isMobile ? 32 : 80,
-          opacity: 0,
-          scale: isMobile ? 1 : 0.96,
-        });
+          gsap.set(cards, {
+            y: isMobile ? 32 : 80,
+            opacity: 0,
+            scale: isMobile ? 1 : 0.96,
+          });
 
-        gsap.to(cards, {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: isMobile ? 0.6 : 1,
-          stagger: isMobile ? 0.08 : 0.18,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: root,
-            start: isMobile ? "top 85%" : "top 55%",
-            once: true,
-          },
-        });
+          gsap.to(cards, {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: isMobile ? 0.6 : 1,
+            stagger: isMobile ? 0.08 : 0.18,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: root,
+              start: isMobile ? "top 85%" : "top 55%",
+              once: true,
+            },
+          });
 
-        gsap.from(".process-heading", {
-          y: isMobile ? 28 : 50,
-          opacity: 0,
-          duration: isMobile ? 0.65 : 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: root,
-            start: isMobile ? "top 85%" : "top 70%",
-            once: true,
-          },
-        });
+          gsap.from(".process-heading", {
+            y: isMobile ? 28 : 50,
+            opacity: 0,
+            duration: isMobile ? 0.65 : 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: root,
+              start: isMobile ? "top 85%" : "top 70%",
+              once: true,
+            },
+          });
 
-        scheduleScrollTriggerRefresh();
-      }, root);
+          scheduleScrollTriggerRefresh();
+        }, root);
 
-      return () => ctx.revert();
-    }, [isMobile]),
+        return () => ctx.revert();
+      },
+      [isMobile],
+    ),
   );
 
   return (
@@ -101,12 +104,12 @@ const Process = () => {
           {processSteps.map((item, index) => (
             <article
               key={item.id}
-              className={`process-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:rounded-[2rem] md:bg-white/[0.04] md:p-10 md:hover:-translate-y-1 md:hover:bg-white/[0.075] ${
+              className={`process-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl active:scale-[0.99] md:rounded-[2rem] md:bg-white/[0.04] md:p-10 ${
                 index % 2 === 0 ? "md:translate-y-10" : ""
               }`}
             >
-              <div className="absolute inset-0 hidden opacity-0 transition duration-500 group-hover:opacity-100 md:block">
-                <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-blue-500/9 blur-[56px] md:h-64 md:w-64 md:bg-blue-500/14 md:blur-3xl" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_46%)] opacity-70 transition duration-500 md:bg-none md:opacity-0 md:group-hover:opacity-100">
+                <div className="absolute -right-20 -top-20 hidden h-64 w-64 rounded-full bg-blue-500/14 blur-3xl md:block" />
               </div>
 
               <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-8">

@@ -89,9 +89,9 @@ const Projects = ({ onNavigate }: ProjectsProps) => {
               }}
               className="project-card group relative min-h-[440px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:bg-white/[0.075]"
             >
-              <div className="absolute inset-0 opacity-70 transition duration-500 md:group-hover:opacity-100">
-                <div className="absolute -right-24 -top-24 h-52 w-52 rounded-full bg-blue-500/10 blur-[56px] md:-right-24 md:-top-24 md:h-64 md:w-64 md:bg-blue-500/16 md:blur-3xl" />
-                <div className="absolute -bottom-28 left-0 h-52 w-52 rounded-full bg-purple-500/5 blur-[56px] md:-bottom-32 md:left-10 md:h-64 md:w-64 md:bg-purple-500/8 md:blur-3xl" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.16),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.09),transparent_45%)] opacity-70 transition duration-500 md:bg-none md:group-hover:opacity-100">
+                <div className="absolute -right-24 -top-24 hidden h-64 w-64 rounded-full bg-blue-500/16 blur-3xl md:block" />
+                <div className="absolute -bottom-32 left-10 hidden h-64 w-64 rounded-full bg-purple-500/8 blur-3xl md:block" />
               </div>
 
               <div className="relative z-10 flex h-full flex-col justify-between">
