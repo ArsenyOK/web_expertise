@@ -11,12 +11,12 @@ export const clients = [
   },
   {
     id: 3,
-    name: "Client Template",
-    type: "SaaS Product",
+    name: "Confidential SaaS Client",
+    type: "B2B Platform • NDA",
   },
   {
     id: 4,
-    name: "Client Template",
-    type: "AI Startup",
+    name: "Stealth AI Startup",
+    type: "Internal AI Tools • NDA",
   },
 ];

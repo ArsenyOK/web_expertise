@@ -27,33 +27,36 @@ const Blog = ({ onNavigate, currentPath }: BlogProps) => {
   useLazyGsap(
     performanceTier === "high",
     sectionRef,
-    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
-      const ctx = gsap.context(() => {
-        const cards = gsap.utils.toArray<HTMLElement>(".blog-card");
+    useCallback(
+      ({ gsap, scheduleScrollTriggerRefresh }, root) => {
+        const ctx = gsap.context(() => {
+          const cards = gsap.utils.toArray<HTMLElement>(".blog-card");
 
-        gsap.set(cards, {
-          y: isMobile ? 32 : 70,
-          opacity: 0,
-        });
+          gsap.set(cards, {
+            y: isMobile ? 32 : 70,
+            opacity: 0,
+          });
 
-        gsap.to(cards, {
-          y: 0,
-          opacity: 1,
-          duration: isMobile ? 0.55 : 0.9,
-          stagger: isMobile ? 0.08 : 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: root,
-            start: isMobile ? "top 85%" : "top 70%",
-            once: true,
-          },
-        });
+          gsap.to(cards, {
+            y: 0,
+            opacity: 1,
+            duration: isMobile ? 0.55 : 0.9,
+            stagger: isMobile ? 0.08 : 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: root,
+              start: isMobile ? "top 85%" : "top 70%",
+              once: true,
+            },
+          });
 
-        scheduleScrollTriggerRefresh();
-      }, root);
+          scheduleScrollTriggerRefresh();
+        }, root);
 
-      return () => ctx.revert();
-    }, [isMobile]),
+        return () => ctx.revert();
+      },
+      [isMobile],
+    ),
   );
 
   return (
@@ -84,10 +87,14 @@ const Blog = ({ onNavigate, currentPath }: BlogProps) => {
           {blogPosts.map((post, index) => (
             <Link
               key={post.id}
-              to="/states"
-              onClick={(event) => handleRouteClick(event, "/states")}
+              to={`/articles/${post.articleId}`}
+              onClick={(event) =>
+                handleRouteClick(event, `/articles/${post.articleId}`)
+              }
               className={
-                currentPath === "/states" ? "text-white" : "hover:text-white"
+                currentPath.startsWith("/articles")
+                  ? "text-white"
+                  : "hover:text-white"
               }
             >
               <article className="blog-card group relative min-h-[260px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:min-h-[360px] md:rounded-[2rem] md:bg-white/[0.04] md:p-7 md:hover:-translate-y-2 md:hover:bg-white/[0.08]">
