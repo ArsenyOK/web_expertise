@@ -71,7 +71,7 @@ const Process = () => {
             05
           </div>
 
-          <div className="absolute -left-16 -top-16 h-56 w-56 rounded-full bg-blue-500/8 blur-3xl md:-left-8 md:-top-8 md:h-64 md:w-64" />
+          <div className="absolute -left-16 -top-16 h-56 w-56 rounded-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1),transparent_68%)] blur-2xl md:-left-8 md:-top-8 md:h-64 md:w-64 md:bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.14),transparent_68%)] md:blur-3xl" />
 
           <div className="relative z-10">
             <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
@@ -106,8 +106,8 @@ const Process = () => {
               key={item.id}
               className="process-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl md:rounded-[2rem] md:bg-white/[0.04] md:p-10"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_46%)] opacity-70 transition duration-500 md:bg-none md:opacity-0 md:group-hover:opacity-100">
-                <div className="absolute -right-20 -top-20 hidden h-64 w-64 rounded-full bg-blue-500/14 blur-3xl md:block" />
+              <div className="absolute inset-0 hidden opacity-0 transition duration-500 md:block md:group-hover:opacity-100">
+                <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.14),transparent_68%)] blur-3xl" />
               </div>
 
               <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-8">
