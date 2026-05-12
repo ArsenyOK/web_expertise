@@ -257,15 +257,17 @@ const ProjectDetailPage = () => {
                       {projectData.preview.title}
                     </h3>
 
-                    <div className="mt-6 grid grid-cols-4 gap-3">
+                    <div className="mt-6 grid grid-cols-2 gap-3">
                       {projectData.preview.stats.map((item) => (
                         <div
                           key={item.label}
-                          className="rounded-xl border border-white/10 bg-white/[0.04] p-3"
+                          className="min-w-0 rounded-xl border border-white/10 bg-white/[0.04] p-4"
                         >
-                          <p className="text-lg font-semibold">{item.value}</p>
+                          <p className="truncate text-lg font-semibold leading-6">
+                            {item.value}
+                          </p>
 
-                          <p className="mt-1 text-[0.65rem] text-white/35">
+                          <p className="mt-2 text-xs leading-5 text-white/35">
                             {item.label}
                           </p>
                         </div>
@@ -288,14 +290,24 @@ const ProjectDetailPage = () => {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-black/40 p-5 font-mono text-xs leading-6 text-white/50">
-                    <p className="text-white/30">
-                      {projectData.preview.codeTitle}
+                  <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+                    <p className="text-xs text-white/35">
+                      {projectData.preview.detailsTitle}
                     </p>
 
-                    <pre className="mt-5 whitespace-pre-wrap">
-                      {projectData.preview.code}
-                    </pre>
+                    <div className="mt-6 space-y-4">
+                      {projectData.preview.details.map((item, index) => (
+                        <div key={item} className="flex gap-3">
+                          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-[0.65rem] text-white/40">
+                            {index + 1}
+                          </span>
+
+                          <p className="text-sm leading-6 text-white/55">
+                            {item}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
