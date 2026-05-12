@@ -55,6 +55,7 @@ export const projectDetails = [
         "Changed files are filtered, analyzed, and scored",
         "AI review summary is posted back into the pull request",
       ],
+    },
 
     overview: {
       title: "Overview",
@@ -193,6 +194,7 @@ export const projectDetails = [
         "AI converts the input into structured execution stages",
         "The plan is reviewed, adjusted, and prepared for action",
       ],
+    },
 
     overview: {
       title: "Overview",
@@ -331,6 +333,7 @@ export const projectDetails = [
         "Large datasets are rendered through optimized UI patterns",
         "Teams monitor threats, assets, and operational signals",
       ],
+    },
 
     overview: {
       title: "Overview",
@@ -469,6 +472,7 @@ export const projectDetails = [
         "Platform syncs blockchain-related product data",
         "Frontend connects wallet state, product UI, and smart contract logic",
       ],
+    },
 
     overview: {
       title: "Overview",
