@@ -87,7 +87,7 @@ const Projects = ({ onNavigate }: ProjectsProps) => {
                 e.preventDefault();
                 onNavigate(`/project/${project.id}`);
               }}
-              className="project-card group relative min-h-[440px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:bg-white/[0.075]"
+              className="project-card group relative min-h-[440px] overflow-hidden rounded-[2rem] active:scale-[0.99] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:bg-white/[0.075]"
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.16),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.09),transparent_45%)] opacity-70 transition duration-500 md:bg-none md:group-hover:opacity-100">
                 <div className="absolute -right-24 -top-24 hidden h-64 w-64 rounded-full bg-blue-500/16 blur-3xl md:block" />
