@@ -12,33 +12,36 @@ const Expertise = () => {
   useLazyGsap(
     performanceTier === "high",
     sectionRef,
-    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
-      const ctx = gsap.context(() => {
-        const cards = gsap.utils.toArray<HTMLElement>(".expertise-card");
+    useCallback(
+      ({ gsap, scheduleScrollTriggerRefresh }, root) => {
+        const ctx = gsap.context(() => {
+          const cards = gsap.utils.toArray<HTMLElement>(".expertise-card");
 
-        gsap.set(cards, {
-          y: isMobile ? 32 : 80,
-          opacity: 0,
-        });
+          gsap.set(cards, {
+            y: isMobile ? 32 : 80,
+            opacity: 0,
+          });
 
-        gsap.to(cards, {
-          y: 0,
-          opacity: 1,
-          duration: isMobile ? 0.55 : 1,
-          ease: "power3.out",
-          stagger: isMobile ? 0.08 : 0.15,
-          scrollTrigger: {
-            trigger: root,
-            start: isMobile ? "top 85%" : "top 75%",
-            once: true,
-          },
-        });
+          gsap.to(cards, {
+            y: 0,
+            opacity: 1,
+            duration: isMobile ? 0.55 : 1,
+            ease: "power3.out",
+            stagger: isMobile ? 0.08 : 0.15,
+            scrollTrigger: {
+              trigger: root,
+              start: isMobile ? "top 85%" : "top 75%",
+              once: true,
+            },
+          });
 
-        scheduleScrollTriggerRefresh();
-      }, root);
+          scheduleScrollTriggerRefresh();
+        }, root);
 
-      return () => ctx.revert();
-    }, [isMobile]),
+        return () => ctx.revert();
+      },
+      [isMobile],
+    ),
   );
 
   return (
@@ -69,7 +72,7 @@ const Expertise = () => {
           {expertise.map((item, index) => (
             <article
               key={item.id}
-              className="expertise-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:rounded-2xl md:bg-white/5 md:p-6 md:hover:bg-white/10"
+              className="expertise-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition md:rounded-2xl md:bg-white/5 md:p-6 md:hover:bg-white/10"
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_46%)] opacity-70 transition md:bg-none md:opacity-0 md:group-hover:opacity-100">
                 <div className="absolute -left-8 -top-8 hidden h-36 w-36 rounded-full bg-blue-500/18 blur-2xl md:block" />

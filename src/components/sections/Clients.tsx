@@ -12,58 +12,61 @@ const Clients = () => {
   useLazyGsap(
     performanceTier === "high",
     sectionRef,
-    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
-      const ctx = gsap.context(() => {
-        const cards = gsap.utils.toArray<HTMLElement>(".client-card");
+    useCallback(
+      ({ gsap, scheduleScrollTriggerRefresh }, root) => {
+        const ctx = gsap.context(() => {
+          const cards = gsap.utils.toArray<HTMLElement>(".client-card");
 
-        const statement = root.querySelector(".clients-statement") as
-          | HTMLElement
-          | null;
+          const statement = root.querySelector(
+            ".clients-statement",
+          ) as HTMLElement | null;
 
-        gsap.set(cards, {
-          y: isMobile ? 32 : 60,
-          opacity: 0,
-        });
-
-        if (statement) {
-          gsap.set(statement, {
-            y: isMobile ? 28 : 40,
+          gsap.set(cards, {
+            y: isMobile ? 32 : 60,
             opacity: 0,
           });
-        }
 
-        gsap.to(cards, {
-          y: 0,
-          opacity: 1,
-          duration: isMobile ? 0.55 : 0.9,
-          stagger: isMobile ? 0.08 : 0.12,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: root,
-            start: isMobile ? "top 85%" : "top 75%",
-            once: true,
-          },
-        });
+          if (statement) {
+            gsap.set(statement, {
+              y: isMobile ? 28 : 40,
+              opacity: 0,
+            });
+          }
 
-        if (statement) {
-          gsap.to(statement, {
+          gsap.to(cards, {
             y: 0,
             opacity: 1,
-            duration: isMobile ? 0.65 : 1,
+            duration: isMobile ? 0.55 : 0.9,
+            stagger: isMobile ? 0.08 : 0.12,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: statement,
-              start: isMobile ? "top 90%" : "top 80%",
+              trigger: root,
+              start: isMobile ? "top 85%" : "top 75%",
               once: true,
             },
           });
-        }
 
-        scheduleScrollTriggerRefresh();
-      }, root);
+          if (statement) {
+            gsap.to(statement, {
+              y: 0,
+              opacity: 1,
+              duration: isMobile ? 0.65 : 1,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: statement,
+                start: isMobile ? "top 90%" : "top 80%",
+                once: true,
+              },
+            });
+          }
 
-      return () => ctx.revert();
-    }, [isMobile]),
+          scheduleScrollTriggerRefresh();
+        }, root);
+
+        return () => ctx.revert();
+      },
+      [isMobile],
+    ),
   );
 
   return (
@@ -97,7 +100,7 @@ const Clients = () => {
           {clients.map((client, index) => (
             <article
               key={client.id}
-              className="client-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition active:scale-[0.99] md:rounded-2xl md:bg-white/[0.04] md:p-6 md:hover:-translate-y-1 md:hover:bg-white/[0.08]"
+              className="client-card group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl transition md:rounded-2xl md:bg-white/[0.04] md:p-6 md:hover:-translate-y-1 md:hover:bg-white/[0.08]"
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.11),transparent_44%)] opacity-65 transition duration-500 md:bg-none md:opacity-0 md:group-hover:opacity-100">
                 <div className="absolute -right-10 -top-10 hidden h-28 w-28 rounded-full bg-blue-500/14 blur-2xl md:block" />

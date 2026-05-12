@@ -9,7 +9,7 @@ import { useNavigateTo } from "./hooks/useNavigateTo";
 import ScrollToTop from "./components/ui-tools/ScrollToTop";
 import { usePerformanceTier } from "./hooks/usePerformanceTier";
 
-const States = lazy(() => import("./components/pages/States"));
+const ArticlePage = lazy(() => import("./components/pages/ArticlePage"));
 const ProjectPage = lazy(() => import("./components/pages/ProjectItem"));
 const loadContactModal = () => import("./components/ui-tools/ContactModal");
 const ContactModal = lazy(loadContactModal);
@@ -83,10 +83,7 @@ const App = () => {
           <CustomCursor />
         </Suspense>
       )}
-      <Header
-        currentPath={location.pathname}
-        onContactOpen={openContact}
-      />
+      <Header currentPath={location.pathname} onContactOpen={openContact} />
       <Routes>
         <Route
           path="/"
@@ -99,10 +96,10 @@ const App = () => {
           }
         />
         <Route
-          path="/states"
+          path="/articles/:id"
           element={
             <Suspense fallback={<PageLoader isVisible />}>
-              <States />
+              <ArticlePage />
             </Suspense>
           }
         />

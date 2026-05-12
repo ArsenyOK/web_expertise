@@ -27,10 +27,12 @@ const Hero = ({ onContactOpen }: HeroProps) => {
           Software Engineer / Premium Digital Products
         </p>
 
-        <h1 className="hero-title max-w-6xl overflow-hidden text-[clamp(3.25rem,15vw,5.8rem)] font-semibold leading-[0.92] tracking-[-0.065em] md:text-8xl lg:text-9xl">
+        <h1 className="hero-title max-w-6xl text-[clamp(3.6rem,14vw,5.8rem)] font-semibold leading-[0.9] tracking-[-0.065em] md:text-8xl lg:text-9xl">
           <span className="block">I build</span>
-          <span className="block">web, mobile</span>
-          <span className="block">and AI products.</span>
+          <span className="block md:hidden">scalable</span>
+          <span className="block md:hidden">products</span>
+          <span className="hidden md:block">scalable products</span>
+          <span className="block">and AI systems.</span>
         </h1>
 
         <p className="hero-text mt-7 max-w-xl text-base leading-7 text-white/60 md:mt-8 md:max-w-2xl md:text-xl md:leading-8">

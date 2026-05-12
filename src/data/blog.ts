@@ -1,6 +1,7 @@
 export const blogPosts = [
   {
     id: 1,
+    articleId: "ai-changing-frontend-engineering",
     title: "How AI is changing frontend engineering",
     category: "AI / Engineering",
     description:
@@ -8,12 +9,14 @@ export const blogPosts = [
   },
   {
     id: 2,
+    articleId: "why-performance-is-a-business-feature",
     title: "Why performance is a business feature",
     category: "Frontend Performance",
     description:
       "Fast interfaces don’t just feel better — they improve conversion, retention, and product trust.",
   },
   {
+    articleId: "coming soon",
     id: 3,
     title: "Building MVPs without creating technical debt",
     category: "Product Development",
