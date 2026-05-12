@@ -80,7 +80,7 @@ const Clients = () => {
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col justify-between gap-5 md:mb-16 md:flex-row md:items-end md:gap-8">
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
+            <p className="text-xs uppercase tracking-[0.28em] text-white/55 md:text-sm md:tracking-[0.3em]">
               Clients / Experience
             </p>
 

@@ -63,58 +63,61 @@ const ProjectDetailPage = () => {
   useLazyGsap(
     performanceTier !== "low",
     pageRef,
-    useCallback(({ gsap, scheduleScrollTriggerRefresh }, root) => {
-      const ctx = gsap.context(() => {
-        const heroBlocks = gsap.utils.toArray<HTMLElement>(".project-reveal");
-        const sections = gsap.utils.toArray<HTMLElement>(".project-section");
+    useCallback(
+      ({ gsap, scheduleScrollTriggerRefresh }, root) => {
+        const ctx = gsap.context(() => {
+          const heroBlocks = gsap.utils.toArray<HTMLElement>(".project-reveal");
+          const sections = gsap.utils.toArray<HTMLElement>(".project-section");
 
-        gsap.set(heroBlocks, {
-          y: 48,
-          autoAlpha: 0,
-          force3D: true,
-          willChange: "transform, opacity",
-        });
-
-        gsap.to(heroBlocks, {
-          y: 0,
-          autoAlpha: 1,
-          duration: performanceTier === "high" ? 0.8 : 0.45,
-          stagger: performanceTier === "high" ? 0.12 : 0.06,
-          ease: "power3.out",
-          onComplete: () => {
-            gsap.set(heroBlocks, { clearProps: "willChange" });
-          },
-        });
-
-        sections.forEach((section) => {
-          gsap.set(section, {
-            y: 44,
+          gsap.set(heroBlocks, {
+            y: 48,
             autoAlpha: 0,
             force3D: true,
             willChange: "transform, opacity",
           });
 
-          gsap.to(section, {
+          gsap.to(heroBlocks, {
             y: 0,
             autoAlpha: 1,
-            duration: performanceTier === "high" ? 0.85 : 0.5,
+            duration: performanceTier === "high" ? 0.8 : 0.45,
+            stagger: performanceTier === "high" ? 0.12 : 0.06,
             ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 82%",
-              once: true,
-            },
             onComplete: () => {
-              gsap.set(section, { clearProps: "willChange" });
+              gsap.set(heroBlocks, { clearProps: "willChange" });
             },
           });
-        });
 
-        scheduleScrollTriggerRefresh();
-      }, root);
+          sections.forEach((section) => {
+            gsap.set(section, {
+              y: 44,
+              autoAlpha: 0,
+              force3D: true,
+              willChange: "transform, opacity",
+            });
 
-      return () => ctx.revert();
-    }, [performanceTier]),
+            gsap.to(section, {
+              y: 0,
+              autoAlpha: 1,
+              duration: performanceTier === "high" ? 0.85 : 0.5,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: section,
+                start: "top 82%",
+                once: true,
+              },
+              onComplete: () => {
+                gsap.set(section, { clearProps: "willChange" });
+              },
+            });
+          });
+
+          scheduleScrollTriggerRefresh();
+        }, root);
+
+        return () => ctx.revert();
+      },
+      [performanceTier],
+    ),
     projectId,
   );
 
@@ -250,19 +253,21 @@ const ProjectDetailPage = () => {
                       {projectData.preview.eyebrow}
                     </p>
 
-                    <h3 className="mt-4 text-xl font-medium">
+                    <h2 className="mt-4 text-xl font-medium">
                       {projectData.preview.title}
-                    </h3>
+                    </h2>
 
-                    <div className="mt-6 grid grid-cols-4 gap-3">
+                    <div className="mt-6 grid grid-cols-2 gap-3">
                       {projectData.preview.stats.map((item) => (
                         <div
                           key={item.label}
-                          className="rounded-xl border border-white/10 bg-white/[0.04] p-3"
+                          className="min-w-0 rounded-xl border border-white/10 bg-white/[0.04] p-4"
                         >
-                          <p className="text-lg font-semibold">{item.value}</p>
+                          <p className="truncate text-lg font-semibold leading-6">
+                            {item.value}
+                          </p>
 
-                          <p className="mt-1 text-[0.65rem] text-white/35">
+                          <p className="mt-2 text-xs leading-5 text-white/35">
                             {item.label}
                           </p>
                         </div>
@@ -285,14 +290,24 @@ const ProjectDetailPage = () => {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-black/40 p-5 font-mono text-xs leading-6 text-white/50">
-                    <p className="text-white/30">
-                      {projectData.preview.codeTitle}
+                  <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+                    <p className="text-xs text-white/35">
+                      {projectData.preview.detailsTitle}
                     </p>
 
-                    <pre className="mt-5 whitespace-pre-wrap">
-                      {projectData.preview.code}
-                    </pre>
+                    <div className="mt-6 space-y-4">
+                      {projectData.preview.details.map((item, index) => (
+                        <div key={item} className="flex gap-3">
+                          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-[0.65rem] text-white/40">
+                            {index + 1}
+                          </span>
+
+                          <p className="text-sm leading-6 text-white/55">
+                            {item}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -400,41 +415,40 @@ const ProjectDetailPage = () => {
               </div>
             </section>
 
-            <section className="project-section mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 md:p-12">
-              <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-center">
-                <div>
-                  <p className="text-sm text-white/40">
-                    {projectData.nextProject.label}
-                  </p>
+            <section className="project-section mt-24 overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.04] px-8 py-14 md:px-14 md:py-20">
+              <div className="max-w-3xl">
+                <p className="text-sm uppercase tracking-[0.24em] text-white/35">
+                  {projectData.nextProject.label}
+                </p>
 
-                  <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em]">
-                    {projectData.nextProject.title}
-                  </h2>
+                <h2 className="mt-6 text-5xl font-semibold leading-[0.95] tracking-[-0.05em] md:text-7xl">
+                  {projectData.nextProject.title}
+                </h2>
 
-                  <p className="mt-5 max-w-md text-base leading-7 text-white/55">
-                    {projectData.nextProject.description}
-                  </p>
+                <p className="mt-6 max-w-2xl text-base leading-7 text-white/55 md:text-lg md:leading-8">
+                  {projectData.nextProject.description}
+                </p>
 
-                  <Link
-                    to={`/project/${projectData.nextProject.nextProjectId}`}
-                    onClick={(event) =>
-                      handleNextProject(
-                        event,
-                        projectData.nextProject.nextProjectId,
-                      )
-                    }
-                    className="mt-8 inline-flex items-center gap-2 text-sm font-medium"
-                  >
-                    {projectData.nextProject.action}
-                    <ArrowUpRight size={16} />
-                  </Link>
-                </div>
+                <Link
+                  to={`/project/${projectData.nextProject.nextProjectId}`}
+                  onClick={(event) =>
+                    handleNextProject(
+                      event,
+                      projectData.nextProject.nextProjectId,
+                    )
+                  }
+                  className="group mt-10 inline-flex items-center gap-3 text-sm font-medium text-white/70 transition hover:text-white"
+                >
+                  <span>{projectData.nextProject.action}</span>
 
-                <div className="min-h-[260px] rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.28),transparent_40%),rgba(255,255,255,0.04)]" />
+                  <ArrowUpRight
+                    size={16}
+                    className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                  />
+                </Link>
               </div>
             </section>
           </div>
-
           {projectTransition && performanceTier !== "low" && (
             <div
               className={`pointer-events-none fixed inset-0 z-[90] bg-[#050505] transition-opacity ease-out ${

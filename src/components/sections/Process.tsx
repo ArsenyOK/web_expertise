@@ -74,7 +74,7 @@ const Process = () => {
           <div className="absolute -left-16 -top-16 h-56 w-56 rounded-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1),transparent_68%)] blur-2xl md:-left-8 md:-top-8 md:h-64 md:w-64 md:bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.14),transparent_68%)] md:blur-3xl" />
 
           <div className="relative z-10">
-            <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
+            <p className="text-xs uppercase tracking-[0.28em] text-white/55 md:text-sm md:tracking-[0.3em]">
               Process
             </p>
 

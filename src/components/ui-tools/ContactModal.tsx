@@ -231,7 +231,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
         >
           {displayedMode === "intro" ? (
             <>
-              <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
+              <p className="text-xs uppercase tracking-[0.28em] text-white/55 md:text-sm md:tracking-[0.3em]">
                 Project inquiry
               </p>
 
@@ -260,7 +260,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
             </>
           ) : displayedMode === "form" ? (
             <>
-              <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
+              <p className="text-xs uppercase tracking-[0.28em] text-white/55 md:text-sm md:tracking-[0.3em]">
                 Email inquiry
               </p>
 

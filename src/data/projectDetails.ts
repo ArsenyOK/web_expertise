@@ -49,14 +49,12 @@ export const projectDetails = [
         },
       ],
 
-      codeTitle: "src/services/analytics.ts",
-
-      code: `+ trackEvent("signup", {
-+   source: campaign,
-+   userId,
-+ });
-
-- console.log(data);`,
+      detailsTitle: "System Flow",
+      details: [
+        "GitHub webhook receives pull request event",
+        "Changed files are filtered, analyzed, and scored",
+        "AI review summary is posted back into the pull request",
+      ],
     },
 
     overview: {
@@ -190,13 +188,12 @@ export const projectDetails = [
         },
       ],
 
-      codeTitle: "generated-plan.json",
-
-      code: `{
-  "phase": "MVP",
-  "timeline": "30 days",
-  "priority": "high"
-}`,
+      detailsTitle: "Planning Flow",
+      details: [
+        "User describes a goal or scattered idea",
+        "AI converts the input into structured execution stages",
+        "The plan is reviewed, adjusted, and prepared for action",
+      ],
     },
 
     overview: {
@@ -330,11 +327,12 @@ export const projectDetails = [
         },
       ],
 
-      codeTitle: "dashboard-performance.ts",
-
-      code: `optimizeGridRendering();
-enableVirtualization();
-reduceBundleSize();`,
+      detailsTitle: "Dashboard Flow",
+      details: [
+        "Security events are collected and normalized",
+        "Large datasets are rendered through optimized UI patterns",
+        "Teams monitor threats, assets, and operational signals",
+      ],
     },
 
     overview: {
@@ -454,7 +452,7 @@ reduceBundleSize();`,
         { value: "Web3", label: "Blockchain App" },
         { value: "React", label: "Frontend Stack" },
         { value: "MetaMask", label: "Wallet Integration" },
-        { value: "Smart Contracts", label: "Core Logic" },
+        { value: "Ether.js", label: "Core Logic" },
       ],
 
       feedback: [
@@ -468,11 +466,12 @@ reduceBundleSize();`,
         },
       ],
 
-      codeTitle: "wallet-connect.ts",
-
-      code: `connectMetaMask();
-initializeSmartContracts();
-syncWalletState();`,
+      detailsTitle: "Web3 Flow",
+      details: [
+        "User connects a wallet through MetaMask",
+        "Platform syncs blockchain-related product data",
+        "Frontend connects wallet state, product UI, and smart contract logic",
+      ],
     },
 
     overview: {

@@ -14,7 +14,7 @@ const Footer = () => {
               Arsenii Pylypenko
             </span>
 
-            <span className="text-xs text-white/30">
+            <span className="text-xs text-white/55">
               © 2026 All rights reserved.
             </span>
           </div>
@@ -25,7 +25,7 @@ const Footer = () => {
             href="https://github.com/ArsenyOK"
             target="_blank"
             rel="noreferrer"
-            className="transition-colors duration-300 hover:text-white"
+            className="transition-colors duration-300 text-white/55 hover:text-white"
           >
             GitHub
           </a>
@@ -34,7 +34,7 @@ const Footer = () => {
             href="https://www.linkedin.com/in/arsenii-pylypenko-071094176/"
             target="_blank"
             rel="noreferrer"
-            className="transition-colors duration-300 hover:text-white"
+            className="transition-colors duration-300 text-white/55 hover:text-white"
           >
             LinkedIn
           </a>

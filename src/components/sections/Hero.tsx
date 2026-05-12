@@ -23,7 +23,7 @@ const Hero = ({ onContactOpen }: HeroProps) => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.07),transparent_40%)] md:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_35%)]" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl">
-        <p className="hero-label mb-5 max-w-[280px] text-xs uppercase leading-5 tracking-[0.25em] text-white/50 sm:max-w-none md:mb-6 md:text-sm md:tracking-[0.35em]">
+        <p className="hero-label mb-5 max-w-[280px] text-xs uppercase leading-5 tracking-[0.25em] text-white/55 sm:max-w-none md:mb-6 md:text-sm md:tracking-[0.35em]">
           Software Engineer / Premium Digital Products
         </p>
 
