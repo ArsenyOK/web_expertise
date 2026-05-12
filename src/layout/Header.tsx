@@ -61,7 +61,11 @@ const Header = ({ currentPath, onContactOpen }: HeaderProps) => {
       className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/30 backdrop-blur-xl"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <Link to="/" className="text-sm font-semibold tracking-wide">
+        <Link
+          to="/"
+          aria-label="Arseniy Pilipenko homepage"
+          className="text-sm font-semibold tracking-wide"
+        >
           <Logo className="h-15 w-15 text-white" />
         </Link>
 

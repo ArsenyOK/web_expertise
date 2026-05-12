@@ -253,9 +253,9 @@ const ProjectDetailPage = () => {
                       {projectData.preview.eyebrow}
                     </p>
 
-                    <h3 className="mt-4 text-xl font-medium">
+                    <h2 className="mt-4 text-xl font-medium">
                       {projectData.preview.title}
-                    </h3>
+                    </h2>
 
                     <div className="mt-6 grid grid-cols-2 gap-3">
                       {projectData.preview.stats.map((item) => (

@@ -10,7 +10,7 @@ const ArticlePage = () => {
     return (
       <section className="min-h-screen bg-[#050505] px-5 py-32 text-white">
         <div className="mx-auto max-w-4xl">
-          <p className="text-sm uppercase tracking-[0.3em] text-white/35">
+          <p className="text-sm uppercase tracking-[0.3em] text-white/55">
             Article not found
           </p>
 
@@ -45,7 +45,7 @@ const ArticlePage = () => {
         </Link>
 
         <div className="mt-12 max-w-5xl">
-          <p className="text-xs uppercase tracking-[0.3em] text-white/35">
+          <p className="text-xs uppercase tracking-[0.3em] text-white/55">
             {article.eyebrow}
           </p>
 
@@ -59,8 +59,6 @@ const ArticlePage = () => {
 
           <div className="mt-7 flex flex-wrap gap-3 text-sm text-white/35">
             <span>{article.publishedAt}</span>
-            <span>•</span>
-            <span>{article.readTime}</span>
           </div>
         </div>
 

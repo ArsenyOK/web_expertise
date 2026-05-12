@@ -69,7 +69,7 @@ const Blog = ({ onNavigate, currentPath }: BlogProps) => {
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mb-10 max-w-3xl md:mb-16">
-          <p className="text-xs uppercase tracking-[0.28em] text-white/40 md:text-sm md:tracking-[0.3em]">
+          <p className="text-xs uppercase tracking-[0.28em] text-white/55 md:text-sm md:tracking-[0.3em]">
             Insights
           </p>
 
