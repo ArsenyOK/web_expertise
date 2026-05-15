@@ -224,7 +224,6 @@ const ProjectDetailPage = () => {
                 <p className="mt-6 max-w-xl text-base leading-7 text-white/60 md:text-lg md:leading-8">
                   {projectData.hero.description}
                 </p>
-
               </div>
 
               <div className="project-reveal relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl md:p-6">

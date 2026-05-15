@@ -1,7 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
 const loader = ".page-loader";
-const visibleLoaders = (page: Page) => page.locator(`${loader}[aria-hidden="false"]`);
+const visibleLoaders = (page: Page) =>
+  page.locator(`${loader}[aria-hidden="false"]`);
 
 const waitForHomePage = async (page: Page) => {
   await page.goto("/");
@@ -19,8 +20,12 @@ test.describe("portfolio e2e flows", () => {
     await expect(
       page.getByText("Software Engineer / Premium Digital Products"),
     ).toBeVisible();
-    await expect(page.getByRole("button", { name: "Get in touch" })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Arseniy Pilipenko homepage/i })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Get in touch" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /Arseniy Pilipenko homepage/i }),
+    ).toBeVisible();
   });
 
   test("scrolls through the full basic page information", async ({ page }) => {
@@ -90,7 +95,9 @@ test.describe("portfolio e2e flows", () => {
       page.getByRole("heading", { name: "AI PR Review Assistant" }),
     ).toBeVisible();
     await expect(page.getByText("Pull Request #142")).toBeVisible();
-    await expect(page.getByText("GitHub webhook receives pull request event")).toBeVisible();
+    await expect(
+      page.getByText("GitHub webhook receives pull request event"),
+    ).toBeVisible();
 
     const overviewSection = page.locator(".project-section").first();
     await overviewSection.scrollIntoViewIfNeeded();
@@ -124,8 +131,12 @@ test.describe("portfolio e2e flows", () => {
         name: "How AI is changing frontend engineering.",
       }),
     ).toBeVisible();
-    await expect(page.getByText("AI is a tool, not engineering judgment.")).toBeVisible();
-    await expect(page.getByText("AI changes the workflow, not the responsibility.")).toBeVisible();
+    await expect(
+      page.getByText("AI is a tool, not engineering judgment."),
+    ).toBeVisible();
+    await expect(
+      page.getByText("AI changes the workflow, not the responsibility."),
+    ).toBeVisible();
     await expect(page.getByText("Key Areas")).toBeVisible();
   });
 
@@ -143,7 +154,9 @@ test.describe("portfolio e2e flows", () => {
     await page.getByRole("button", { name: "Get in touch" }).click();
     await expect(page.getByText("Project inquiry")).toBeVisible();
     await expect(page.getByRole("button", { name: "Email me" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Connect on LinkedIn" })).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Connect on LinkedIn" }),
+    ).toBeVisible();
 
     await page.getByRole("button", { name: "Email me" }).click();
     await expect(page.getByText("Email inquiry")).toBeVisible();
@@ -155,7 +168,9 @@ test.describe("portfolio e2e flows", () => {
       .getByPlaceholder("What do you want to build?")
       .fill("A reliable Playwright test suite for portfolio flows.");
 
-    const submitRequest = page.waitForRequest("https://api.web3forms.com/submit");
+    const submitRequest = page.waitForRequest(
+      "https://api.web3forms.com/submit",
+    );
     await page.getByRole("button", { name: "Send email" }).click();
 
     const request = await submitRequest;
