@@ -23,8 +23,6 @@ export const projectDetails = [
       title: "AI PR Review Assistant",
       description:
         "An AI-powered GitHub App that reviews pull requests, analyzes code changes, and helps teams improve code quality.",
-      primaryAction: "Live Demo",
-      secondaryAction: "View on GitHub",
     },
 
     preview: {
@@ -162,8 +160,6 @@ export const projectDetails = [
       title: "Focus AI",
       description:
         "A product that transforms goals and scattered ideas into structured execution plans using AI-powered workflows.",
-      primaryAction: "Open Product",
-      secondaryAction: "Product Overview",
     },
 
     preview: {
@@ -301,8 +297,6 @@ export const projectDetails = [
       title: "Enterprise Security Dashboard",
       description:
         "Complex dashboards, data-heavy interfaces, performance optimization, and scalable frontend architecture.",
-      primaryAction: "View Case Study",
-      secondaryAction: "Architecture Notes",
     },
 
     preview: {
@@ -440,8 +434,6 @@ export const projectDetails = [
       title: "RAIR Technologies",
       description:
         "A Web3 platform built around blockchain technology, focused on digital ownership, smart contracts, and decentralized user experiences.",
-      primaryAction: "View Platform",
-      secondaryAction: "Blockchain Architecture",
     },
 
     preview: {
