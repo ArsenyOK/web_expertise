@@ -225,22 +225,6 @@ const ProjectDetailPage = () => {
                   {projectData.hero.description}
                 </p>
 
-                <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                  <a
-                    href="#"
-                    className="rounded-full bg-white px-7 py-4 text-center text-sm font-medium text-black transition hover:scale-105"
-                  >
-                    {projectData.hero.primaryAction}
-                  </a>
-
-                  <a
-                    href="#"
-                    className="flex items-center justify-center gap-2 rounded-full border border-white/20 px-7 py-4 text-sm font-medium text-white transition hover:bg-white/10"
-                  >
-                    {projectData.hero.secondaryAction}
-                    <ArrowUpRight size={16} />
-                  </a>
-                </div>
               </div>
 
               <div className="project-reveal relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl md:p-6">
