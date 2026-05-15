@@ -59,24 +59,24 @@ const Contact = () => {
         </p>
 
         <div className="mt-10 flex flex-col justify-center gap-8 sm:flex-row">
-            <Magnetic>
-          <a
-            href="mailto:arsen.pilipenko2014@gmail.com"
-            className="rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition hover:scale-105"
-          >
-            Start a project
-          </a>
+          <Magnetic>
+            <a
+              href="mailto:arsen.pilipenko2014@gmail.com"
+              className="rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition hover:scale-105"
+            >
+              Start a project
+            </a>
           </Magnetic>
 
-        <Magnetic>
-          <a
-            href="https://www.linkedin.com/in/arsenii-pylypenko-071094176/"
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full border border-white/20 px-8 py-4 text-sm font-medium text-white transition hover:bg-white/10"
-          >
-            Connect on LinkedIn
-          </a>
+          <Magnetic>
+            <a
+              href="https://www.linkedin.com/in/arsenii-pylypenko-071094176/"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/20 px-8 py-4 text-sm font-medium text-white transition hover:bg-white/10"
+            >
+              Connect on LinkedIn
+            </a>
           </Magnetic>
         </div>
       </div>

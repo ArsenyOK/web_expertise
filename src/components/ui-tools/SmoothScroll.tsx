@@ -1,6 +1,10 @@
 import { useLayoutEffect } from "react";
 import Lenis from "lenis";
-import { gsap, ScrollTrigger, scheduleScrollTriggerRefresh } from "../../lib/gsap";
+import {
+  gsap,
+  ScrollTrigger,
+  scheduleScrollTriggerRefresh,
+} from "../../lib/gsap";
 
 const SmoothScroll = () => {
   useLayoutEffect(() => {

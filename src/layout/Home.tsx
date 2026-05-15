@@ -25,7 +25,14 @@ const Home = ({ onContactOpen, navigateTo, currentPath }: HomeProps) => {
 
     const idleCallback = window.requestIdleCallback?.(
       () => setShowDeferredSections(true),
-      { timeout: performanceTier === "high" ? 1 : performanceTier === "medium" ? 600 : 1000 },
+      {
+        timeout:
+          performanceTier === "high"
+            ? 1
+            : performanceTier === "medium"
+              ? 600
+              : 1000,
+      },
     );
     const fallbackTimer = window.setTimeout(
       () => setShowDeferredSections(true),
