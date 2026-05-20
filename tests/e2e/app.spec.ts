@@ -137,9 +137,7 @@ test.describe("portfolio e2e flows", () => {
     await overlayAppeared;
     await page.waitForURL("**/project/focus-ai");
     await expect(transitionOverlay).toHaveCount(0);
-    await expect(
-      page.getByRole("heading", { name: "Focus AI" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Focus AI" })).toBeVisible();
   });
 
   test("navigates from insights to a full article page with preload", async ({
