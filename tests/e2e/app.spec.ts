@@ -111,9 +111,10 @@ test.describe("portfolio e2e flows", () => {
     await expect(detailsSection).toContainText("Tech Stack");
   });
 
-  test("uses a transition overlay when low-tier users switch projects", async ({
+  test("animates the project content when low-tier users switch projects", async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
     await page.addInitScript(() => {
       Object.defineProperty(navigator, "hardwareConcurrency", {
         configurable: true,
@@ -130,13 +131,19 @@ test.describe("portfolio e2e flows", () => {
       page.getByRole("heading", { name: "AI PR Review Assistant" }),
     ).toBeVisible();
 
-    const transitionOverlay = page.getByTestId("project-transition-overlay");
-    const overlayAppeared = transitionOverlay.waitFor({ state: "attached" });
+    const projectContent = page.getByTestId("project-content");
 
     await page.getByRole("link", { name: "View Project" }).click();
-    await overlayAppeared;
+    await expect(projectContent).toHaveAttribute(
+      "data-transition-state",
+      "low-hidden",
+    );
     await page.waitForURL("**/project/focus-ai");
-    await expect(transitionOverlay).toHaveCount(0);
+    await expect(projectContent).toHaveAttribute(
+      "data-transition-state",
+      "stable",
+    );
+    await expect(projectContent).toHaveCSS("opacity", "1");
     await expect(page.getByRole("heading", { name: "Focus AI" })).toBeVisible();
   });
 
