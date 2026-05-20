@@ -23,7 +23,9 @@ type ProjectTransition = {
   stage: ProjectTransitionStage;
 };
 
-const getTransitionDuration = (performanceTier: ReturnType<typeof usePerformanceTier>) => {
+const getTransitionDuration = (
+  performanceTier: ReturnType<typeof usePerformanceTier>,
+) => {
   if (performanceTier === "high") return 340;
   if (performanceTier === "medium") return 220;
 
