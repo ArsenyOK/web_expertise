@@ -47,18 +47,14 @@ const ProjectDetailPage = () => {
 
     if (projectTransition?.path === path) return;
 
-    if (performanceTier === "low") {
-      navigate(path);
-      return;
-    }
-
     setProjectTransition({
       path,
       stage: "entering-start",
     });
   };
 
-  const transitionDuration = performanceTier === "high" ? 340 : 220;
+  const transitionDuration =
+    performanceTier === "high" ? 340 : performanceTier === "medium" ? 220 : 180;
 
   useLazyGsap(
     performanceTier !== "low",
@@ -432,8 +428,9 @@ const ProjectDetailPage = () => {
               </div>
             </section>
           </div>
-          {projectTransition && performanceTier !== "low" && (
+          {projectTransition && (
             <div
+              data-testid="project-transition-overlay"
               className={`pointer-events-none fixed inset-0 z-[90] bg-[#050505] transition-opacity ease-out ${
                 projectTransition.stage === "entering" ||
                 projectTransition.stage === "covered"
