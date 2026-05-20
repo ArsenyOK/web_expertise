@@ -23,6 +23,15 @@ type ProjectTransition = {
   stage: ProjectTransitionStage;
 };
 
+const getTransitionDuration = (
+  performanceTier: ReturnType<typeof usePerformanceTier>,
+) => {
+  if (performanceTier === "high") return 340;
+  if (performanceTier === "medium") return 220;
+
+  return 260;
+};
+
 const ProjectDetailPage = () => {
   const pageRef = useRef<HTMLElement | null>(null);
   const [projectTransition, setProjectTransition] =
@@ -47,18 +56,19 @@ const ProjectDetailPage = () => {
 
     if (projectTransition?.path === path) return;
 
-    if (performanceTier === "low") {
-      navigate(path);
-      return;
-    }
-
     setProjectTransition({
       path,
       stage: "entering-start",
     });
   };
 
-  const transitionDuration = performanceTier === "high" ? 340 : 220;
+  const transitionDuration = getTransitionDuration(performanceTier);
+  const isLowTierTransition =
+    performanceTier === "low" && projectTransition !== null;
+  const isLowTierContentHidden =
+    isLowTierTransition &&
+    projectTransition.stage !== "entering-start" &&
+    projectTransition.stage !== "exiting";
 
   useLazyGsap(
     performanceTier !== "low",
@@ -202,7 +212,26 @@ const ProjectDetailPage = () => {
         <>
           {" "}
           <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_35%)]" />
-          <div className="relative z-10 mx-auto max-w-7xl">
+          <div
+            data-testid="project-content"
+            data-transition-state={
+              isLowTierContentHidden
+                ? "low-hidden"
+                : isLowTierTransition
+                  ? "low-visible"
+                  : "stable"
+            }
+            className={`relative z-10 mx-auto max-w-7xl transform-gpu transition-[opacity,transform] ease-out ${
+              isLowTierContentHidden
+                ? "translate-y-3 opacity-0"
+                : "translate-y-0 opacity-100"
+            }`}
+            style={{
+              transitionDuration: isLowTierTransition
+                ? `${transitionDuration}ms`
+                : undefined,
+            }}
+          >
             <button
               onClick={handleBackToProjects}
               className="project-reveal mb-16 flex items-center gap-2 text-sm text-white/50 transition hover:text-white"
@@ -434,6 +463,7 @@ const ProjectDetailPage = () => {
           </div>
           {projectTransition && performanceTier !== "low" && (
             <div
+              data-testid="project-transition-overlay"
               className={`pointer-events-none fixed inset-0 z-[90] bg-[#050505] transition-opacity ease-out ${
                 projectTransition.stage === "entering" ||
                 projectTransition.stage === "covered"

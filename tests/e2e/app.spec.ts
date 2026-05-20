@@ -111,6 +111,42 @@ test.describe("portfolio e2e flows", () => {
     await expect(detailsSection).toContainText("Tech Stack");
   });
 
+  test("animates the project content when low-tier users switch projects", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, "hardwareConcurrency", {
+        configurable: true,
+        get: () => 2,
+      });
+    });
+
+    await page.goto("/project/ai-pr-review-assistant");
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-performance-tier",
+      "low",
+    );
+    await expect(
+      page.getByRole("heading", { name: "AI PR Review Assistant" }),
+    ).toBeVisible();
+
+    const projectContent = page.getByTestId("project-content");
+
+    await page.getByRole("link", { name: "View Project" }).click();
+    await expect(projectContent).toHaveAttribute(
+      "data-transition-state",
+      "low-hidden",
+    );
+    await page.waitForURL("**/project/focus-ai");
+    await expect(projectContent).toHaveAttribute(
+      "data-transition-state",
+      "stable",
+    );
+    await expect(projectContent).toHaveCSS("opacity", "1");
+    await expect(page.getByRole("heading", { name: "Focus AI" })).toBeVisible();
+  });
+
   test("navigates from insights to a full article page with preload", async ({
     page,
   }) => {
