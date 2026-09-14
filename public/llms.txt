@@ -1,0 +1,30 @@
+# Arsenii Pylypenko
+
+> Arsenii Pylypenko is a Senior Frontend Engineer focused on high-performance SaaS platforms, AI tools, MVP development, frontend architecture, and AI system integration.
+
+This site is a portfolio for evaluating Arsenii's engineering work, services, selected projects, writing, and contact options. Use the links below as the primary entry points for understanding the site's content.
+
+## Key pages
+
+- [Homepage](/): Portfolio overview, positioning, services, selected work, process, clients, writing, and contact section.
+- [Selected work](/#work): Case-study style overview of projects across AI tools, SaaS products, dashboards, and Web3 platforms.
+- [Expertise](/#expertise): Core engineering areas including AI tools, frontend engineering, MVP development, performance optimization, and scalable web applications.
+- [Process](/#process): Product and engineering workflow from discovery through launch and optimization.
+- [Contact](/#contact): Ways to start a project or connect with Arsenii.
+
+## Projects
+
+- [AI PR Review Assistant](/project/ai-pr-review-assistant): AI-powered GitHub App concept for reviewing pull requests and improving code quality.
+- [Focus AI](/project/focus-ai): AI productivity product concept that turns goals and scattered ideas into execution plans.
+- [Enterprise Security Dashboard](/project/enterprise-security-dashboard): Frontend engineering case study for data-heavy dashboards and scalable interface architecture.
+- [RAIR Technologies](/project/rair-tech): Production Web3 platform work with digital ownership, MetaMask integration, and smart contract interactions.
+
+## Articles
+
+- [How AI is changing frontend engineering](/articles/ai-changing-frontend-engineering): Perspective on how AI tools reshape development, debugging, and shipping workflows.
+- [Why performance is a business feature](/articles/why-performance-is-a-business-feature): Notes on how speed affects conversion, retention, trust, and engineering decisions.
+
+## External profiles
+
+- [GitHub](https://github.com/ArsenyOK): Public engineering profile and repositories.
+- [LinkedIn](https://www.linkedin.com/in/arsenii-pylypenko-071094176/): Professional profile and contact channel.
